@@ -17,15 +17,17 @@
                     <div class="dropdown-menu  dropdown-menu-end">
                         <ul>
                             <li>
-                                <a href="javascript:void(0);" class="dropdown-item"><i class="ti ti-file-type-pdf me-1"></i>Export as
-                                    PDF</a>
+                                <a href="javascript:void(0);" class="dropdown-item"><i class="ti ti-file-type-pdf me-1"></i>Export as PDF</a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" class="dropdown-item"><i class="ti ti-file-type-xls me-1"></i>Export as
-                                    Excel </a>
+                                <a href="javascript:void(0);" class="dropdown-item"><i class="ti ti-file-type-xls me-1"></i>Export as Excel</a>
                             </li>
                         </ul>
                     </div>
+                </div>
+                <div class="d-flex align-items-center shadow p-1 rounded border view-icons bg-white">
+                    <a href="{{ route('companies.index', ['pagetype' => 'list']) }}" class="btn btn-sm p-1 border-0 fs-14 {{ request('pagetype') == 'list' ? 'active' : '' }}"><i class="ti ti-list-tree"></i></a>
+                    <a href="{{ route('companies.index', ['pagetype' => 'grid']) }}" class="flex-shrink-0 btn btn-sm p-1 border-0 ms-1 fs-14 {{ request('pagetype') != 'list' ? 'active' : '' }}"><i class="ti ti-grid-dots"></i></a>
                 </div>
                 <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add Company</a>
             </div>
@@ -47,12 +49,14 @@
             </div>
         </div>
 
-        <div class="row" id="company-list">
-            
-        </div>
-        <div class="text-center mt-3 mb-3">
-            <button class="btn btn-outline-primary" id="loadMoreBtn">Load More</button>
-        </div>
+        @if(request('pagetype') === 'list')
+            @include('companies.company_lists')
+        @else
+            <div class="row" id="company-list"></div>
+            <div class="text-center mt-3 mb-3">
+                <button class="btn btn-outline-primary" id="loadMoreBtn">Load More</button>
+            </div>
+        @endif
     </div>
 </x-app-layout>
 
@@ -67,69 +71,125 @@
     </div>
 </div>
 
+@if(request('pagetype') === 'list')
+
+@endif
 <script>
     $(document).ready(function () {
-        let page = 1;
-        let loading = false;
-        function loadCompanies(reset = false) {
-            console.log(reset);
-            console.log(loading);
-            if (loading) return;
-            loading = true;
+        var type = "{{ request('pagetype') ?? 'grid' }}";
+        if(type === 'list') {
+            let table = $('#manage-company-list').DataTable({
+                "bFilter": false, 
+                "bInfo": false,
+                "serverSide": true,
+                "processing": true,
+                language: {
+                    search: ' ',
+                    sLengthMenu: '_MENU_',
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    lengthMenu: "Show _MENU_ entries",
+                    paginate: {
+                        next: '<i class="ti ti-chevron-right"></i> ',
+                        previous: '<i class="ti ti-chevron-left"></i> '
+                    },
+                },
+                initComplete: (settings, json)=>{
+                    $('.dataTables_paginate').appendTo('.datatable-paginate');
+                    $('.dataTables_length').appendTo('.datatable-length');
+                },
+                ajax: {
+                    url : "{{ route('companies.index', ['pagetype' => 'list']) }}",
+                    data: function (d) {
+                        d.name = $('#name').val();
+                        d.status = $('#status').val();
+                        d.fromdate = $('#fromdate').val();
+                        d.todate = $('#todate').val();
+                    }
+                },
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                    {data: 'name', name: 'name', orderable: false, searchable: true},
+                    {data: 'phone', name: 'phone', orderable: false, searchable: true},
+                    {data: 'email', name: 'email', orderable: false, searchable: true},
+                    {data: 'address', name: 'address', orderable: false, searchable: true},
+                    {data: 'status', name: 'status', orderable: false, searchable: false},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+            });
 
-            if (reset) {
-                page = 1;
-                $('#company-list').html('');
+            $('#searchBtn').on('click', function() {
+                table.ajax.reload();
+            });
+
+            $('#resetBtn').on('click', function() {
+                $('#name').val('');
+                $('#fromdate').val('');
+                $('#todate').val('');
+                $('#searchBtn').click();
+                table.ajax.reload();
+            });
+        } else { 
+            let page = 1;
+            let loading = false;
+            function loadCompanies(reset = false) {
+                if (loading) return;
+                loading = true;
+
+                if (reset) {
+                    page = 1;
+                    $('#company-list').html('');
+                }
+
+                let name = $('#name').val();
+                let status = $('#status').val();
+                let fromdate = $('#fromdate').val();
+                let todate = $('#todate').val();
+
+                $.ajax({
+                    url: "{{ route('companies.index') }}",
+                    type: "GET",
+                    data: {name, status, fromdate, todate, page },
+                    success: function (response) {
+                        if (reset) {
+                            $('#company-list').html(response.html);
+                        } else {
+                            $('#company-list').append(response.html);
+                        }
+
+                        if (response.hasMore) {
+                            $('#loadMoreBtn').show();
+                        } else {
+                            $('#loadMoreBtn').hide();
+                        }
+
+                        loading = false;
+                    },
+                    error: function () {
+                        errorMsg('Something went wrong.');
+                        loading = false;
+                    }
+                });
             }
 
-            let name = $('#name').val();
-            let status = $('#status').val();
-            let fromdate = $('#fromdate').val();
-            let todate = $('#todate').val();
-
-            $.ajax({
-                url: "{{ route('companies.index') }}",
-                type: "GET",
-                data: {name, status, fromdate, todate, page },
-                success: function (response) {
-                    if (reset) {
-                        $('#company-list').html(response.html);
-                    } else {
-                        $('#company-list').append(response.html);
-                    }
-
-                    if (response.hasMore) {
-                        $('#loadMoreBtn').show();
-                    } else {
-                        $('#loadMoreBtn').hide();
-                    }
-
-                    loading = false;
-                },
-                error: function () {
-                    errorMsg('Something went wrong.');
-                    loading = false;
-                }
-            });
-        }
-
-        loadCompanies();
-        
-        $('#searchBtn').on('click', function () {
-            loadCompanies(true);
-        });
-
-        $('#loadMoreBtn').on('click', function () {
-            page++;
             loadCompanies();
-        });
+            
+            $('#searchBtn').on('click', function () {
+                loadCompanies(true);
+            });
 
-        $('#resetBtn').on('click', function () {
-            $('#name').val('');
-            $('#fromdate').val('');
-            $('#todate').val('');
-            $('#searchBtn').click();
-        });
+            $('#loadMoreBtn').on('click', function () {
+                page++;
+                loadCompanies();
+            });
+
+            $('#resetBtn').on('click', function () {
+                $('#name').val('');
+                $('#fromdate').val('');
+                $('#todate').val('');
+                $('#searchBtn').click();
+            });
+        } 
 
         $('#createCompanyForm').on('submit', function (e) {
             e.preventDefault();
@@ -166,5 +226,28 @@
             }
         });
     });
+
+    $(document).on('submit', '#updateCompanyForm', function (e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+        var companyId = $('#company_id').val(); // Read ID correctly
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('/companies/update') }}/" + companyId, // Correct dynamic route
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                successMsg('Company updated successfully!');
+                location.reload();
+            },
+            error: function () {
+                errorMsg('An error occurred while updating the company.');
+            }
+        });
+    });
+
 
 </script>

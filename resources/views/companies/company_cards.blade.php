@@ -24,10 +24,10 @@
                             <i class="ti ti-dots-vertical"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item edit-user" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
+                            <a class="dropdown-item edit-user" data-id="{{ $company->id }}" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
                                 <i class="ti ti-edit text-blue"></i> Edit
                             </a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_contact">
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-id="{{ $company->id }}" data-bs-target="#delete_contact">
                                 <i class="ti ti-trash"></i> Delete
                             </a>
                             <a class="dropdown-item" href="{{ url('/companies/'.$company->id) }}">

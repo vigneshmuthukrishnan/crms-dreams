@@ -6,6 +6,8 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
@@ -31,13 +33,58 @@ class CompanyController extends Controller
         if ($request->fromdate && $request->todate) {
             $query->whereBetween('created_at', [$request->fromdate, $request->todate]);
         }
-        $total = $query->count();
-        $companies = $query->latest()->offset($offset)->limit($limit)->get();
 
         if ($request->ajax()) {
-            $view = view('companies.company_cards', compact('companies'))->render();
-            $hasMore = ($offset + $limit) < $total;
-            return response()->json(['html' => $view,'hasMore' => $hasMore, 'nextPage' => $page + 1]);
+            if($request->pagetype && $request->pagetype == 'list') {
+                return DataTables::of($query)
+                    ->addIndexColumn()
+                    ->addColumn('name', function($row) {
+                        return $row->name ?? '—';
+                    })
+                    ->addColumn('phone', function($row) {
+                        return $row->phone_1 ?? '—';
+                    })
+                    ->addColumn('email', function($row) {
+                        return $row->email ?? '—';
+                    })
+                    ->addColumn('address', function($row) {
+                        return  Str::limit($row->address, 20) ?? '—';
+                    })
+                    ->addColumn('status', function($row) {
+                        $class = $row->status == 1 ? 'bg-success' : 'bg-danger';
+                        $statusText = $row->status == 1 ? 'Active' : 'Inactive';
+                        return '<span class="badge badge-pill '.$class.'">'.$statusText.'</span>';
+                    })
+                    ->addColumn('action', function($row) {
+                        $previewUrl = route('companies.show', $row->id);
+                        return '
+                            <div class="dropdown table-action">
+                                <a href="#" class="action-icon btn btn-xs shadow btn-icon btn-outline-light" data-bs-toggle="dropdown">
+                                    <i class="ti ti-dots-vertical"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item edit-user" href="javascript:void(0);" data-id="'.$row->id.'" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
+                                        <i class="ti ti-edit text-blue"></i> Edit
+                                    </a>
+                                    <a class="dropdown-item delete-user" href="#" data-id="'.$row->id.'" data-bs-toggle="modal" data-bs-target="#delete_contact">
+                                        <i class="ti ti-trash"></i> Delete
+                                    </a>
+                                    <a class="dropdown-item" href="'.$previewUrl.'">
+                                        <i class="ti ti-eye text-blue-light"></i> Preview
+                                    </a>
+                                </div>
+                            </div>
+                        ';
+                    })
+                    ->rawColumns(['status', 'action'])
+                    ->make(true);
+            } else {
+                $total = $query->count();
+                $companies = $query->latest()->offset($offset)->limit($limit)->get();
+                $view = view('companies.company_cards', compact('companies'))->render();
+                $hasMore = ($offset + $limit) < $total;
+                return response()->json(['html' => $view,'hasMore' => $hasMore, 'nextPage' => $page + 1]);
+            }
         }
 
         $companies = Company::latest()->take($limit)->get();
@@ -97,7 +144,7 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone_1' => 'nullable|string|max:20',
@@ -118,15 +165,20 @@ class CompanyController extends Controller
             'instagram_url' => 'nullable|url|max:255', 
         ]);
 
-        if($request->expectsJson() && $validator->fails()){
-            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                $errors = $validator->errors()->all();
+                $errorMessage = implode(', ', $errors);
+                return response()->json(['success' => false, 'message' => $errorMessage], 422);
+            }
+            return back()->withErrors($validator)->withInput();
         }
 
-        $company->update($validated);
+        $company->update($validator->validated());
         $company->updated_by = Auth::id();
         $company->save();
-
-        return redirect()->route('companies.index')->with('success', 'Company updated successfully.');
+        
+        return response()->json(['success' => true, 'message' => 'Company updated successfully.']);
     }
 
 
