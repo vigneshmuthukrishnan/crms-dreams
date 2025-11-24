@@ -27,7 +27,7 @@
                 <li class="menu-title"><span>Main Menu</span></li>
                 <li>
                     <ul>
-                        <li>
+                        <li class="{{ Route::is('dashboard') ? 'active' : '' }}">
                             <a href="{{ url('/dashboard') }}">
                                 <i class="ti ti-dashboard"></i><span>Dashboard</span>
                             </a>
@@ -37,24 +37,26 @@
                 <li class="menu-title"><span>CRM</span></li>
                 <li>
                     <ul>
-                        <li>
+                        <li class="{{ Route::is('companies.*') ? 'active' : '' }}">
                             <a href="{{ url('/companies') }}"><i class="ti ti-building-community"></i><span>Companies</span></a>
                         </li>
                         <li>
                             <a href="{{ url('/companies') }}"><i class="ti ti-chart-arcs"></i><span>Leads</span></a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="{{ url('/companies') }}"><i class="ti ti-atom-2"></i><span>Projects</span></a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
-
-                <li class="menu-title"><span>User Management</span></li>
-                <li>							
-                    <ul>
-                        <li><a href="{{ url('/users') }}"><i class="ti ti-users"></i><span>Manage Users</span></a></li>
-                    </ul>
-                </li>
+                @if(auth()->user()->admin)
+                    <li class="menu-title"><span>User Management</span></li>
+                    <li>							
+                        <ul>
+                            <li class="{{ Route::is('users.*') ? 'active' : '' }}"><a href="{{ url('/users') }}"><i class="ti ti-users"></i><span>Manage Users</span></a></li>
+                            <li class=""><a href="#"><i class="ti ti-calendar"></i><span>Attendances</span></a></li>
+                        </ul>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

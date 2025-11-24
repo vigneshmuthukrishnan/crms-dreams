@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyController;
@@ -20,19 +21,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/un-authorized', function () {
+    return view('errors.403')->with('error', 'You do not have admin access.');
+})->name('un-authorized');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // User Management Routes
-    Route::resource('users', UserController::class);
-    Route::get('/users/edit/{id}', [UserController::class, 'editUser'])->name('users.editUser');
-    Route::put('/users/update/{id}', [UserController::class, 'updateUser'])->name('users.updateUser');
 
     // Company Management Routes not using resource controller
     Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
@@ -43,6 +43,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/companies/delete/{id}', [CompanyController::class, 'destroy'])->name('companies.destroy');
     Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 
+});
+
+// Admin can do user management
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::resource('users', UserController::class);
+    Route::get('/users/edit/{id}', [UserController::class, 'editUser'])->name('users.editUser');
+    Route::put('/users/update/{id}', [UserController::class, 'updateUser'])->name('users.updateUser');
 });
 
 require __DIR__.'/auth.php';
