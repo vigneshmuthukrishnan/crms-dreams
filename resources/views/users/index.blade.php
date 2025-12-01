@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <div class="table-responsive custom-table">
+                <div class="table-responsive custom-table" style="overflow-x: hidden !important;">
                     <table class="table table-nowrap" id="manage-users-list">
                         <thead class="table-light">
                             <tr>

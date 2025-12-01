@@ -14085,3 +14085,7 @@ th.fc-day-header {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+.table-responsive {
+  overflow-x: hidden !important;
+}

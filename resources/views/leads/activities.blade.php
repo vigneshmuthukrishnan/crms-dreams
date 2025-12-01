@@ -1,0 +1,82 @@
+    <div class="offcanvas offcanvas-end offcanvas-large" tabindex="-1" id="offcanvas_add_activity">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="mb-0">Add New Activity </h5>
+            <button type="button"
+                class="btn-close custom-btn-close border p-1 me-0 d-flex align-items-center justify-content-center rounded-circle"
+                data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <form action="activities.html">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Title <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="form-label">Activity Type<span
+                                        class="text-danger">*</span></label>
+                                <ul class="radio-activity">
+                                    <li class="me-2 mb-2">
+                                        <div class="active-type">
+                                            <input type="radio" id="call" name="activity_type" checked="">
+                                            <label for="call" class="rounded"><i class="ti ti-phone me-2"></i>Calls</label>
+                                        </div>
+                                    </li>
+                                    <li class="me-2 mb-2">
+                                        <div class="active-type">
+                                            <input type="radio" id="mail" name="activity_type">
+                                            <label for="mail" class="rounded"><i class="ti ti-mail me-2"></i>Email</label>
+                                        </div>
+                                    </li>
+                                    <li class="me-2 mb-2">
+                                        <div class="active-type">
+                                            <input type="radio" id="task" name="activity_type">
+                                            <label for="task" class="rounded"><i class="ti ti-subtask me-2"></i>Task</label>
+                                        </div>
+                                    </li>
+                                    <li class="me-2 mb-2">
+                                        <div class="active-type">
+                                            <input type="radio" id="shares" name="activity_type">
+                                            <label for="shares" class="rounded"><i class="ti ti-user-share me-2"></i>Meeting</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Due Date <span class="text-danger">*</span></label>
+                                <div class="input-group w-auto input-group-flat">
+                                    <input type="date" class="form-control" data-provider="flatpickr" placeholder="dd/mm/yyyy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Time</label>
+                                <div class="input-icon-end position-relative">
+                                    <input type="time" class="form-control form-control" name="time" data-provider="timepickr" data-time-basic="true" placeholder="-- : -- : --">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-00">
+                                <label class="form-label">Description<span class="text-danger ms-1">*</span></label>
+                                <textarea class="form-control" rows="3" name="remarks"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end mt-3">
+                    <button type="button" data-bs-dismiss="offcanvas" class="btn btn-light me-2">Cancel</button>
+                    <button type="button" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>

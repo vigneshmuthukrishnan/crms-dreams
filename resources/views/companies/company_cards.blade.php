@@ -11,7 +11,7 @@
                         <div>
                             <h6 class="fs-14">
                                 <a href="{{ url('/companies/'.$company->id) }}" class="fw-medium">
-                                    {{ Str::limit($company->name, 20) }}
+                                    {{ Str::limit($company->name, 15) }}
                                 </a>
                             </h6>
                             <div class="set-star text-default"> 

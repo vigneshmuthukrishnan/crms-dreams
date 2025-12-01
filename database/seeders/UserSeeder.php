@@ -26,8 +26,20 @@ class UserSeeder extends Seeder
                 'status' => $faker->randomElement([0, 1]),
                 'company' => $faker->company,
                 'password' => Hash::make('123456789'),
+                'admin' => 0,
             ]);
         }
+
+        // here one admin user
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'support@mydreamstechnology.in',
+            'phone' => '9999999999',
+            'status' => 1,
+            'company' => 'Admin Company',
+            'password' => Hash::make('mydreams@123'),
+            'admin' => 1,
+        ]);
 
     }
 }

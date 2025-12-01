@@ -168,7 +168,7 @@
                                     <span class="d-md-inline-block"><i class="ti ti-alarm-minus me-1"></i>Activities</span>
                                 </a>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            <!-- <li class="nav-item" role="presentation">
                                 <a href="#tab_2" data-bs-toggle="tab" aria-expanded="true" class="nav-link border-3" aria-selected="false" role="tab" tabindex="-1">
                                     <span class="d-md-inline-block"><i class="ti ti-notes me-1"></i>Notes</span>
                                 </a>
@@ -187,7 +187,7 @@
                                 <a href="#tab_5" data-bs-toggle="tab" aria-expanded="false" class="nav-link border-3" aria-selected="false" tabindex="-1" role="tab">
                                     <span class="d-md-inline-block"><i class="ti ti-mail-check me-1"></i>Email</span>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>

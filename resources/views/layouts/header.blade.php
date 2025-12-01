@@ -65,6 +65,14 @@
                             </a>
                         </div>
                     </form>
+                    @if(auth()->user()->admin == 0)
+                        <form action="{{ route('attendance.closeDay') }}" method="POST">
+                            @csrf
+                            <button class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to close your day?')">
+                                Close Day
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
                 

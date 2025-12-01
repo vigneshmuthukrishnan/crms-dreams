@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Lead extends Model
+{
+    use HasFactory;
+    
+    protected $table = 'leads';
+    
+    protected $fillable = [
+        'name',
+        'customer_name',
+        'company_name',
+        'company_id',
+        'company_type',
+        'lead_source',
+        'number',
+        'email',
+        'date',
+        'plan',
+        'package',
+        'amount',
+        'next_action_date',
+        'status',
+        'remarks',
+        'assignee',
+    ];
+
+    // here company id reletion to company table
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    // assignee relation to user table
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'assignee');
+    }
+
+
+    // package relation to bulk_sms_packages table
+    public function bulkSmsPackage()
+    {
+        return $this->belongsTo(BulkSmsPackage::class, 'package');
+    }
+
+    // lead activities relation
+    public function activities()
+    {
+        return $this->hasMany(LeadActivity::class, 'lead_id');
+    }
+}

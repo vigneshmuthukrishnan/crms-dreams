@@ -1,15 +1,15 @@
 <div class="card border-0 rounded-0">
     <div class="card-body">
         <div class="table-responsive custom-table" style="overflow-x: hidden !important;">
-            <table class="table table-nowrap" id="manage-company-list">
+            <table class="table table-nowrap dataTable no-footer" id="manage-lead-list">
                 <thead class="table-light">
                     <tr>
                         <th class="no-sort">S.no</th>
-                        <th>Name</th>
+                        <th>Lead Name</th>
+                        <th>Company Name</th>
+                        <th>User</th>
                         <th>Phone</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                        <th>Status</th>
+                        <th>Lead Status</th>
                         <th class="text-end no-sort">Action</th>
                     </tr>
                 </thead>
