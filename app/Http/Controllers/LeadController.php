@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Lead;
 use App\Models\Company;
 use App\Models\BulkSmsPackage;
+use App\Models\LeadActivity;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 
@@ -37,11 +38,11 @@ class LeadController extends Controller
                 return DataTables::of($query)
                     ->addIndexColumn()
                     ->addColumn('user', function($row) {
-                        $img = asset('assets/img/users/avatar.jpg');
+                        $img = user_avatar($row->user->name);
                         return '
                             <h6 class="d-flex align-items-center fs-14 fw-medium mb-0">
                                 <a href="#" class="avatar me-2">
-                                    <img class="img-fluid rounded-circle" src="assets/img/users/avatar.jpg" alt="User Image" style="width:30px !important; height:30px !important;">
+                                    <img class="img-fluid rounded-circle" src="'.$img.'" alt="User Image" style="width:30px !important; height:30px !important;">
                                 </a>
                                 <a href="#" class="d-flex flex-column">'.$row->user->name.'</a>
                             </h6>
@@ -137,16 +138,18 @@ class LeadController extends Controller
         $lead->save();
 
         // here add first activity for lead creation
-        LeadActivity::create([
-            'lead_id' => $lead->id,
-            'activity_type' => 'Calls',
-            'date' => now()->toDateString(),
-            'time' => now()->toTimeString(),
-            'remarks' => $request->remarks,
-            'status' => 'status',
-            'created_by' => auth()->user()->id,
-            'updated_by' => auth()->user()->id,
-        ]);
+        // LeadActivity::create([
+        //     'lead_id' => $lead->id,
+        //     'name' => 'Lead Created',
+        //     'type' => 'Calls',
+        //     'date' => now()->toDateString(),
+        //     'time' => now()->toTimeString(),
+        //     'remarks' => $request->remarks,
+        //     'next_action_date' => $request->next_action_date,
+        //     'status' => $request->status,
+        //     'created_by' => auth()->user()->id,
+        //     'updated_by' => auth()->user()->id,
+        // ]);
 
         return response()->json(['success' => true, 'message' => 'Lead created successfully!', 'lead' => $lead], 201);
     }
@@ -155,7 +158,8 @@ class LeadController extends Controller
     {
         $lead = Lead::findOrFail($id);
         $leadCount = Lead::count();
-        return view('leads.show', compact('lead', 'leadCount'));
+        $lead_status = config('static.lead_status');
+        return view('leads.show', compact('lead', 'leadCount', 'lead_status'));
     }
 
     public function edit(Request $request, $id)
@@ -171,5 +175,46 @@ class LeadController extends Controller
     public function destroy(Request $request, $id)
     {
         //
+    }
+
+
+    // Lead Activities functions
+    public function addActivity(Request $request, $leadId)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'activity_type' => 'required|string',
+            'date' => 'required|date',
+            'time' => 'required',
+            'remarks' => 'required|string',
+            'next_action_date' => 'required|date',
+            'status' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                $errors = $validator->errors()->all();
+                $errorMessage = implode(', ', $errors);
+                return response()->json(['success' => false, 'message' => $errorMessage], 422);
+            }
+            return back()->withErrors($validator)->withInput();
+        }
+        $validated = $validator->validated();
+
+        $lead = Lead::findOrFail($leadId);
+
+        $activity = LeadActivity::create([
+            'lead_id' => $lead->id,
+            'name' => $validated['name'],
+            'type' => $validated['activity_type'],
+            'date' => $validated['date'],
+            'time' => $validated['time'],
+            'remark' => $validated['remarks'],
+            'next_action_date' => $validated['next_action_date'],
+            'status' => $validated['status'],
+            'created_by' => auth()->user()->id,
+            'updated_by' => auth()->user()->id,
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Activity added successfully!', 'activity' => $activity], 201);
     }
 }

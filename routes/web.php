@@ -58,6 +58,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/leads/update/{id}', [LeadController::class, 'update'])->name('leads.update');
     Route::delete('/leads/delete/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
     Route::get('/leads/{id}', [LeadController::class, 'show'])->name('leads.show'); 
+
+    // lead activities
+    Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add');
+
+    
 });
 
 // Admin can do user management

@@ -34,13 +34,13 @@
             <div class="header-line"></div>
             <div class="dropdown profile-dropdown d-flex align-items-center justify-content-center">
                 <a href="javascript:void(0);" class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,22" aria-haspopup="false" aria-expanded="false">
-                    <img src="{{ asset('assets/img/users/avatar.jpg') }}" width="38" class="rounded-1 d-flex" alt="user-image">
+                    <img src="{{ user_avatar(Auth::user()->name) }}" width="38" class="rounded-1 d-flex" alt="user-image">
                     <span class="online text-success"><i class="ti ti-circle-filled d-flex bg-white rounded-circle border border-1 border-white"></i></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-2">
                 
                     <div class="d-flex align-items-center bg-light rounded-3 p-2 mb-2">
-                        <img src="{{ asset('assets/img/users/avatar.jpg') }}" class="rounded-circle" width="42" height="42" alt="Img">
+                        <img src="{{ user_avatar(Auth::user()->name) }}" class="rounded-circle" width="42" height="42" alt="Img">
                         <div class="ms-2">
                             <p class="fw-medium text-dark mb-0">{{ Auth::user()->email }}</p>
                             <span class="d-block fs-13">{{ Auth::user()->name }}</span>

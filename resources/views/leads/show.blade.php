@@ -1,23 +1,24 @@
 <x-app-layout>
     <div class="content pb-0">
-        <div class="d-flex align-items-center justify-content-between gap-2 mb-4 flex-wrap">
+        <!-- <div class="d-flex align-items-center justify-content-between gap-2 mb-4 flex-wrap">
             <div>
                 <h4 class="mb-1">Leads<span class="badge badge-soft-primary ms-2">{{$leadCount}}</span></h4>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Leads</li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ url('/leads') }}">Leads</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ $lead->name}}</li>
                     </ol>
                 </nav>
             </div>
             <div class="gap-2 d-flex align-items-center flex-wrap">
             </div>
-        </div>  
+        </div>   -->
 
         <div class="row">
             <div class="col-md-12">
                 <div class="mb-3">
-                    <a href="{{ url('/leads') }}"><i class="ti ti-arrow-narrow-left me-1"></i>Back to Companies</a>
+                    <h6><a href="{{ url('/leads') }}"><i class="ti ti-arrow-narrow-left me-1"></i>Back to Leads</a></h6>
                 </div>
             </div>
 
@@ -31,6 +32,7 @@
                             </div>
                             <div>
                                 <h5 class="mb-1">{{ $lead->name}}</h5>
+                                <p class="mb-1">{{ $lead->company->name}}</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-center flex-wrap gap-2">
@@ -180,135 +182,15 @@
                                     <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_activity"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add New Activity</a>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="badge badge-soft-info border-0 mb-3"><i class="ti ti-calendar-check me-1"></i>28 May 2025</div>
-                                <div class="card border shadow-none mb-3">
-                                    <div class="card-body p-3">
-                                        <div class="d-flex flex-wrap row-gap-2">
-                                            <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-info">
-                                                <i class="ti ti-mail-code fs-20"></i>
-                                            </span>
-                                            <div>
-                                                <h6 class="fw-medium fs-14 mb-1">You sent 1 Message to the contact.</h6>
-                                                <p class="mb-0">10:25 pm</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                            @if($lead->activities->isEmpty())
+                                <div class="card-body">
+                                    <p>No activities found for this lead.</p>
                                 </div>
-                                <div class="card border shadow-none mb-3">
-                                    <div class="card-body p-3">
-                                        <div class="d-flex flex-wrap row-gap-2">
-                                            <span
-                                                class="avatar avatar-md flex-shrink-0 rounded me-2 bg-success">
-                                                <i class="ti ti-phone fs-20"></i>
-                                            </span>
-                                            <div>
-                                                <h6 class="fw-medium fs-14 mb-1">Denwar responded to your appointment schedule question by call at 09:30pm.</h6>
-                                                <p class="mb-0">09:25 pm</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card border shadow-none mb-3">
-                                    <div class="card-body p-3">
-                                        <div class="d-flex flex-lg-nowrap flex-wrap row-gap-2">
-                                            <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-danger">
-                                                <i class="ti ti-notes fs-20"></i>
-                                            </span>
-                                            <div>
-                                                <h6 class="fw-medium fs-14 mb-1">Notes added by Antony</h6>
-                                                <p class="mb-1">Please accept my apologies for the inconvenience
-                                                    caused. It would be much appreciated if it's possible to
-                                                    reschedule to 6:00 PM, or any other day that week.
-                                                </p>
-                                                <p class="mb-0">10.00 pm</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="badge badge-soft-info border-0 mb-3"><i class="ti ti-calendar-check me-1"></i>27 May 2025</div>
-                                <div class="card border shadow-none mb-3">
-                                    <div class="card-body p-3">
-                                        <div class="d-flex flex-wrap row-gap-2">
-                                            <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-warning">
-                                                <i class="ti ti-user-pin fs-20"></i>
-                                            </span>
-                                            <div>
-                                                <h6 class="fw-medium mb-1 d-inline-flex align-items-center fs-14 flex-wrap">Meeting With <span class="avatar avatar-xs rounded mx-2"><img src="assets/img/profiles/avatar-19.jpg" alt="img"></span> Abraham</h6>
-                                                <p class="mb-0">Schedueled on 05:00 pm</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card border shadow-none mb-3">
-                                    <div class="card-body p-3">
-                                        <div class="d-flex flex-wrap row-gap-2">
-                                            <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-teal">
-                                                <i class="ti ti-notes fs-20"></i>
-                                            </span>
-                                            <div>
-                                                <h6 class="fw-medium fs-14 mb-1">Drain responded to your appointment schedule question.</h6>
-                                                <p class="mb-0">09:25 pm</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="badge badge-soft-info border-0 mb-3"><i class="ti ti-calendar-check me-1"></i>Upcoming Activity</div>
-                                <div class="card border shadow-none mb-0">
-                                    <div class="card-body p-3">
-                                        <div class="d-flex flex-lg-nowrap flex-wrap row-gap-2">
-                                            <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-warning">
-                                                <i class="ti ti-user-pin fs-20"></i>
-                                            </span>
-                                            <div>
-                                                <h6 class="fw-medium fs-14 mb-1">Product Meeting</h6>
-                                                <p class="mb-1">A product team meeting is a gathering of the
-                                                    cross-functional product team — ideally including team
-                                                    members from product, engineering, marketing, and customer
-                                                    support.</p>
-                                                <p>25 Jul 2023, 05:00 pm</p>
-                                                <div class="card mb-0">
-                                                    <div class="card-body">
-                                                        <div class="row gy-3">
-                                                            <div class="col-md-4">
-                                                                <div>
-                                                                    <label class="form-label">Reminder <span class="text-danger">*</span></label>
-                                                                    <select class="select">
-                                                                        <option>Select</option>
-                                                                        <option selected>1 hr</option>
-                                                                        <option>Remainder</option>
-                                                                        <option>10hr</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div>
-                                                                    <label class="form-label">Task Priority <span class="text-danger">*</span></label>
-                                                                    <select class="select">
-                                                                        <option>Select</option>
-                                                                        <option selected>High</option>
-                                                                        <option>Low</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div>
-                                                                    <label class="form-label">Assigned To <span class="text-danger">*</span></label>
-                                                                    <select class="select">
-                                                                        <option>Select</option>
-                                                                        <option selected>Jerald Sen</option>
-                                                                        <option>Jackson Daniel</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @else
+                                @foreach($lead->activities as $activity)
+                                    @include('leads.partials.activity', ['activity' => $activity, 'lead_status' => $lead_status])
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                     <!-- /Activities -->
@@ -319,3 +201,32 @@
 </x-app-layout>
 
 @include('leads.activities')
+
+<script>
+    $(document).ready(function () {
+        $('#createLeadActivityForm').on('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                url: "{{ route('leads.activities.add', ['leadId' => $lead->id]) }}",
+                method: 'POST',
+                data: formData,
+                processData: false, 
+                contentType: false,
+                success: function(response) {
+                    successMsg('Lead Activity created successfully!');
+                    location.reload();
+                },
+                error: function(xhr) {
+                    console.log(xhr);                    
+                    if (xhr.status === 422) {
+                        let msg = Object.values(xhr.responseJSON.errors).join('<br>');
+                        errorMsg(msg);
+                    } else {
+                        errorMsg('An error occurred while creating the Lead Activity.');
+                    }
+                }
+            });
+        });
+    });
+</script>

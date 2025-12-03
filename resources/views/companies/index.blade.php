@@ -64,7 +64,7 @@
 
 <div class="offcanvas offcanvas-end offcanvas-large" tabindex="-1" id="offcanvas_edit">
     <div class="offcanvas-header border-bottom">
-        <h5 class="fw-semibold">Edit User</h5>
+        <h5 class="fw-semibold">Edit Company</h5>
         <button type="button" class="btn-close custom-btn-close border p-1 me-0 d-flex align-items-center justify-content-center rounded-circle" data-bs-dismiss="offcanvas"></button> 
     </div>
     <div class="offcanvas-body">

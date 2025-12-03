@@ -8,7 +8,8 @@
             </button>
         </div>
         <div class="offcanvas-body">
-            <form action="activities.html">
+            <form method="POST" enctype="multipart/form-data" id="createLeadActivityForm">
+                @csrf
                 <div>
                     <div class="row">
                         <div class="col-md-12">
@@ -24,26 +25,32 @@
                                 <ul class="radio-activity">
                                     <li class="me-2 mb-2">
                                         <div class="active-type">
-                                            <input type="radio" id="call" name="activity_type" checked="">
+                                            <input type="radio" id="call" name="activity_type" value="call" checked="">
                                             <label for="call" class="rounded"><i class="ti ti-phone me-2"></i>Calls</label>
                                         </div>
                                     </li>
                                     <li class="me-2 mb-2">
                                         <div class="active-type">
-                                            <input type="radio" id="mail" name="activity_type">
+                                            <input type="radio" id="message" name="activity_type" value="message">
+                                            <label for="message" class="rounded"><i class="ti ti-message me-2"></i>Messages</label>
+                                        </div>
+                                    </li>
+                                    <li class="me-2 mb-2">
+                                        <div class="active-type">
+                                            <input type="radio" id="mail" name="activity_type" value="email">
                                             <label for="mail" class="rounded"><i class="ti ti-mail me-2"></i>Email</label>
                                         </div>
                                     </li>
                                     <li class="me-2 mb-2">
                                         <div class="active-type">
-                                            <input type="radio" id="task" name="activity_type">
+                                            <input type="radio" id="task" name="activity_type" value="task">
                                             <label for="task" class="rounded"><i class="ti ti-subtask me-2"></i>Task</label>
                                         </div>
                                     </li>
                                     <li class="me-2 mb-2">
                                         <div class="active-type">
-                                            <input type="radio" id="shares" name="activity_type">
-                                            <label for="shares" class="rounded"><i class="ti ti-user-share me-2"></i>Meeting</label>
+                                            <input type="radio" id="meeting" name="activity_type" value="meeting">
+                                            <label for="meeting" class="rounded"><i class="ti ti-user-share me-2"></i>Meeting</label>
                                         </div>
                                     </li>
                                 </ul>
@@ -51,17 +58,36 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Due Date <span class="text-danger">*</span></label>
+                                <label class="form-label">Date <span class="text-danger">*</span></label>
                                 <div class="input-group w-auto input-group-flat">
-                                    <input type="date" class="form-control" data-provider="flatpickr" placeholder="dd/mm/yyyy">
+                                    <input type="date" name="date" class="form-control" data-provider="flatpickr" placeholder="dd/mm/yyyy">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Time</label>
+                                <label class="form-label">Time <span class="text-danger">*</span></label>
                                 <div class="input-icon-end position-relative">
-                                    <input type="time" class="form-control form-control" name="time" data-provider="timepickr" data-time-basic="true" placeholder="-- : -- : --">
+                                    <input type="time" name="time" class="form-control form-control" name="time" data-provider="timepickr" data-time-basic="true" placeholder="-- : -- : --">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Status <span class="text-danger">*</span></label>
+                                <select class="form-control" data-toggle="select2" name="status" required>
+                                    <option value="" >Select</option>
+                                    @foreach($lead_status as $status)
+                                        <option value="{{ $status }}" >{{ $status }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Next Action Date <span class="text-danger">*</span></label>
+                                <div class="input-group w-auto input-group-flat">
+                                    <input type="date" name="next_action_date" class="form-control" placeholder="dd/mm/yyyy">
                                 </div>
                             </div>
                         </div>
@@ -75,7 +101,7 @@
                 </div>
                 <div class="d-flex align-items-center justify-content-end mt-3">
                     <button type="button" data-bs-dismiss="offcanvas" class="btn btn-light me-2">Cancel</button>
-                    <button type="button" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Create New</button>
                 </div>
             </form>
         </div>

@@ -52,6 +52,6 @@ class Lead extends Model
     // lead activities relation
     public function activities()
     {
-        return $this->hasMany(LeadActivity::class, 'lead_id');
+        return $this->hasMany(LeadActivity::class, 'lead_id')->orderBy('created_at', 'desc');
     }
 }

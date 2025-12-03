@@ -76,7 +76,7 @@
                     <div> {{$lead->user->name}} </div>
                     <div>
                         <span class="avatar avatar-xs border-0">
-                            <img src="{{ asset($lead->logo ?? 'assets/img/users/avatar.jpg') }}"
+                            <img src="{{ user_avatar($lead->user->name) }}"
                                 class="rounded-circle" alt="{{ $lead->user->name }}">
                         </span>
                     </div>                                    

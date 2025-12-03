@@ -105,7 +105,7 @@
 
                     <div>
                         <span class="avatar avatar-xs border-0">
-                            <img src="{{ asset($company->logo ?? 'assets/img/profiles/avatar-02.jpg') }}"
+                            <img src="{{ user_avatar($company->creator->name) }}"
                                 class="rounded-circle" alt="{{ $company->name }}">
                         </span>
                     </div>                                    
