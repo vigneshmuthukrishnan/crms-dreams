@@ -2,6 +2,7 @@
 
 
 return [
+    'user_company' => ['mydreamstechnology', 'tendigit'],
     'company_types' => ['User', 'Reseller'],
     'lead_status'   => ['RNR', 'Invalid Number', 'Followup', 'Not', 'Not Interested', 'Future Requirement'],
     'lead_sources'  => ['Phone Calls', 'Social Media', 'Referral Sites', 'Web Analytics', 'Previous Purchases', 'Other'],
@@ -13,4 +14,11 @@ return [
         'Tiruppur','Tiruvallur','Tiruvannamalai','Tiruvarur','Vellore','Viluppuram','Virudhunagar',
         'Mayiladuthurai'
     ],
+    'products_icon' => [
+        'BulkSMS' => 'ti ti-message-circle',
+        'WhatsApp' => 'ti ti-brand-whatsapp',
+        'VoiceCall' => 'ti ti-phone',
+        'RCS' => 'ti ti-message',
+        'IVR' => 'ti ti-microphone',
+    ]
 ];

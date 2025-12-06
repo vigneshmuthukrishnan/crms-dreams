@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Full Name <span class="text-danger">*</span></label>
-            <input type="text" name="name" value="{{ $user->name }}" class="form-control">
+            <input type="text" name="name" value="{{ $user->name }}" class="form-control" >
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Email <span class="text-danger">*</span></label>
@@ -16,7 +16,12 @@
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Company</label>
-            <input type="text" class="form-control" name="company" value="{{ $user->compyany }}">
+            <select name="company" class="form-select">
+                @foreach($user_company as $company)
+                    <option value="{{ $company }}" {{ $user->company == $company ? 'selected' : '' }} >{{ ucfirst($company) }}</option>
+                @endforeach
+            </select>
+            @error('company') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Password</label>

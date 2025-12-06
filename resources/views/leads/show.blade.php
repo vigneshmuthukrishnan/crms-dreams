@@ -98,13 +98,13 @@
                                 <span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2">
                                     <i class="ti ti-package fs-14"></i>
                                 </span>
-                                <p class="mb-0">{{ $lead->bulkSmsPackage->package_name }}</p>
+                                <p class="mb-0">{{ $products->name }}</p>
                             </div>
                             <div class="d-flex align-items-center mb-2">
                                 <span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2">
                                     <i class="ti ti-message fs-14"></i>
                                 </span>
-                                <p class="mb-0">{{ $lead->bulkSmsPackage->sms_count }} SMS</p>
+                                <p class="mb-0">{{ $packages->quantity }}</p>
                             </div>
                             <div class="d-flex align-items-center">
                                 <span
@@ -112,7 +112,7 @@
                                     <i class="ti ti-currency-dollar fs-14"></i>
                                 </span>
                                 <p class="mb-0">
-                                    {{ number_format($lead->bulkSmsPackage->price, 2) }}
+                                    {{ number_format($packages->total, 2) }}
                                 </p>
                             </div>
                         </div>

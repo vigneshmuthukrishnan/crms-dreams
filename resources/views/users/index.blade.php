@@ -64,8 +64,8 @@
                                 <th>Name</th>
                                 <th>Phone</th>
                                 <th>Email</th>
+                                <th>Company</th>
                                 <th>Created</th>
-                                <th>Last Activity</th>
                                 <th>Status</th>
                                 <th class="text-end no-sort">Action</th>
                             </tr>
@@ -89,7 +89,7 @@
     </div>
 </x-app-layout>
 
-@include('users.add-user')
+@include('users.add-user', compact('user_company'))
 <div class="offcanvas offcanvas-end offcanvas-large" tabindex="-1" id="offcanvas_edit">
     <div class="offcanvas-header border-bottom">
         <h5 class="fw-semibold">Edit User</h5>
@@ -135,8 +135,8 @@ $(document).ready(function () {
             {data: 'name', name: 'name', orderable: false, searchable: true},
             {data: 'phone', name: 'phone', orderable: false, searchable: true},
             {data: 'email', name: 'email', orderable: false, searchable: true},
+            {data: 'company', name: 'company', orderable: false, searchable: true},
             {data: 'created', name: 'created', orderable: false, searchable: true},
-            {data: 'last_activity', name: 'last_activity', orderable: false, searchable: false},
             {data: 'status', name: 'status', orderable: false, searchable: false},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
@@ -155,15 +155,48 @@ $(document).ready(function () {
     });
 });
 
+// add user ajax form submit
+$(document).on('submit', '#createUserForm', function(e) {
+    e.preventDefault();
+    const formData = $(this).serialize();
+    $.ajax({
+        url: "{{ route('users.store') }}",
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            if(response.success) {
+                successMsg('User added successfully!');
+                $('#offcanvas_add').offcanvas('hide');
+                $('#manage-users-list').DataTable().ajax.reload();
+                $('#createUserForm')[0].reset();
+            } else {
+                errorMsg('Failed to add user.');
+            }
+        },
+        error: function(err) {
+            console.log(err);
+            if (err.status === 422) {
+                let errors = err.responseJSON.message;
+                $('.text-danger').remove();
+                $.each(errors, function (key, value) {
+                    $('input[name="' + key + '"]').after('<small class="text-danger">' + value[0] + '</small>');
+                    $('select[name="' + key + '"]').after('<small class="text-danger">' + value[0] + '</small>');
+                });
+            } else {
+                errorMsg('An error occurred while adding the user.');
+            }
+        }
+    });
+});
+
 $(document).on('click', '.edit-user', function() {
     const userId = $(this).data('id');
     $.ajax({
         url: "{{ url('users/edit') }}/" + userId,
         type: 'GET',
         success: function(response) {
+            $('#offcanvas_edit').offcanvas('show');
             $('#offcanvas_edit .offcanvas-body').html(response);
-            const offcanvasEdit = new bootstrap.Offcanvas(document.getElementById('offcanvas_edit'));
-            offcanvasEdit.show();
         },
         error: function() {
             errorMsg('Failed to load edit form.');
@@ -175,7 +208,6 @@ $(document).on('submit', '#editUserForm', function(e) {
     e.preventDefault();
     const formData = $(this).serialize();
     const userId = $('#editUserId').val();
-    console.log(formData);
     $.ajax({
         url: "{{ url('users/update') }}/" + userId,
         type: 'PUT',
@@ -206,24 +238,27 @@ $(document).on('click', '.delete-user', function(){
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
     }).then((result) => {
-        var userId = $(this).data('id');
-        $.ajax({
-            url: '/users/' + userId,
-            type: 'DELETE',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (result.isConfirmed) {
-                    successMsg("Your file has been deleted.");
+        if(result.isConfirmed){
+            var userId = $(this).data('id');
+            $.ajax({
+                url: "{{ url('users') }}/" + userId,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        successMsg("Your file has been deleted.");
+                    }
+                    $('#manage-users-list').DataTable().ajax.reload();
+                },
+                error: function(xhr) {
+                    errorMsg(xhr.responseJSON.message || 'An error occurred while deleting the user.');
                 }
-                $('#manage-users-list').DataTable().ajax.reload();
-            },
-            error: function(xhr) {
-                errorMsg('An error occurred while deleting the user.')
-            }
-        });
+            });
+        }
     });
 });
+
 
 </script>

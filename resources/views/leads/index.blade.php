@@ -60,7 +60,7 @@
     </div>
 </x-app-layout>
 
-@include('leads.add-lead', compact('companies', 'company_types', 'lead_sources', 'lead_status', 'packages'))
+@include('leads.add-lead', compact('companies', 'company_types', 'lead_sources', 'lead_status', 'products', 'icons'))
 
 <div class="offcanvas offcanvas-end offcanvas-large" tabindex="-1" id="offcanvas_edit">
     <div class="offcanvas-header border-bottom">
@@ -215,6 +215,22 @@
         $('#company_name_sel').on('change', function() {
             var selectedOptionText = $(this).find('option:selected').text();
             $('#company_name_txt').val(selectedOptionText);
+        });
+
+        $('input[name="product"]').on('change', function () {
+            let productId = $(this).val();
+            $.ajax({
+                url: "{{ url('/packages-by-product') }}/" + productId,
+                method: "GET",
+                success: function (response) {
+                    $("#product_to_packages").html('<option value="">Select Package</option>');
+                    $.each(response, function (key, package) {
+                        $("#product_to_packages").append(
+                            '<option value="' + package.id + '">' + package.quantity + '</option>'
+                        );
+                    });
+                }
+            });
         });
     });
 

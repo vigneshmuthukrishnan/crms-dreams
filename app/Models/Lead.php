@@ -42,13 +42,6 @@ class Lead extends Model
         return $this->belongsTo(User::class, 'assignee');
     }
 
-
-    // package relation to bulk_sms_packages table
-    public function bulkSmsPackage()
-    {
-        return $this->belongsTo(BulkSmsPackage::class, 'package');
-    }
-
     // lead activities relation
     public function activities()
     {

@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Lead;
 use App\Models\Company;
-use App\Models\BulkSmsPackage;
 use App\Models\LeadActivity;
+use App\Models\Product;
+use App\Models\ProductDetail;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 
@@ -100,8 +101,9 @@ class LeadController extends Controller
         $company_types = config('static.company_types');
         $lead_sources = config('static.lead_sources');
         $lead_status = config('static.lead_status');
-        $packages = BulkSmsPackage::all();
-        return view('leads.index', compact('leads','leadcount', 'companies', 'company_types', 'lead_sources', 'lead_status', 'packages'));
+        $icons = config('static.products_icon');
+        $products = Product::all();
+        return view('leads.index', compact('leads','leadcount', 'companies', 'company_types', 'lead_sources', 'lead_status', 'products', 'icons'));
     }
 
     public function store(Request $request)
@@ -114,9 +116,8 @@ class LeadController extends Controller
             'number' => 'required|string',
             'email' => 'required|email',
             'date' => 'required|date',
-            // 'plan' => 'required|string',
+            'product' => 'required|string',
             'package' => 'required|string',
-            // 'amount' => 'required|numeric',
             'next_action_date' => 'required|date',
             'status' => 'required|string',
             'remarks' => 'required|string',
@@ -134,6 +135,7 @@ class LeadController extends Controller
         $lead = Lead::create($validated);
         $lead->company_name = $request->company_name;
         $lead->company_id = $request->company_id;
+        $lead->plan = $request->product;
         $lead->assignee = auth()->user()->id;
         $lead->save();
 
@@ -157,9 +159,14 @@ class LeadController extends Controller
     public function show(Request $request,  $id)
     {
         $lead = Lead::findOrFail($id);
-        $leadCount = Lead::count();
-        $lead_status = config('static.lead_status');
-        return view('leads.show', compact('lead', 'leadCount', 'lead_status'));
+        if($lead){
+            $leadCount = Lead::count();
+            $products = Product::where('id', $lead->plan)->first();
+            $packages = ProductDetail::where('id', $lead->package)->first();
+            $lead_status = config('static.lead_status');
+            return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages'));
+        }
+        return redirect()->route('leads.index')->with('error', 'Lead not found.');
     }
 
     public function edit(Request $request, $id)

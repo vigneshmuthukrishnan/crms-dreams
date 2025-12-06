@@ -9,7 +9,7 @@
             </button>
         </div>
         <div class="offcanvas-body">
-            <form action="{{ route('users.store') }}" method="POST">
+            <form method="POST" enctype="multipart/form-data" id="createUserForm">
                 @csrf
                 <div class="row">
                     <!-- Name -->
@@ -36,7 +36,11 @@
                     <!-- Company -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Company <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="company" value="{{ old('company') }}">
+                        <select name="company" class="form-select">
+                            @foreach($user_company as $company)
+                                <option value="{{ $company }}" {{ old('company') == $company ? 'selected' : '' }}>{{ ucfirst($company) }}</option>
+                            @endforeach
+                        </select>
                         @error('company') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
 

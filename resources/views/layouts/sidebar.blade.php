@@ -43,8 +43,8 @@
                         <li class="{{ Route::is('leads.*') ? 'active' : '' }}">
                             <a href="{{ url('/leads') }}"><i class="ti ti-chart-arcs"></i><span>Leads</span></a>
                         </li>
-                        <li class="{{ Route::is('packages.*') ? 'active' : '' }}">
-                            <a href="{{ url('/packages') }}"><i class="ti ti-atom-2"></i><span>Packages</span></a>
+                        <li class="{{ Route::is('product.*') ? 'active' : '' }}">
+                            <a href="{{ url('/product') }}"><i class="ti ti-atom-2"></i><span>Product</span></a>
                         </li>
                     </ul>
                 </li>
@@ -61,6 +61,18 @@
                         </ul>
                     </li>
                 @endif
+                <li class="menu-title"><span>Reports</span></li>
+                <li>
+                    <ul>
+                        <li class="#">
+                            <a href="#"><i class="ti ti-report-money"></i><span>Lead Reports</span></a>
+                        </li>
+                        @if(auth()->user()->admin)
+                            <li class="#">
+                                <a href="#"><i class="ti ti-report-search"></i><span>Attendance Reports</span></a>
+                            </li>
+                        @endif
+                    </ul>
             </ul>
         </div>
     </div>

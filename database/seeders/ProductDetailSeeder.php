@@ -49,6 +49,12 @@ class ProductDetailSeeder extends Seeder
                     ['quantity' => '50000', 'cost' => 0, 'with_out' => 0, 'amount' => 15000, 'discount' => 0, 'gst' => 2700, 'total' => 17700],
                     ['quantity' => '100000', 'cost' => 0, 'with_out' => 0, 'amount' => 25000, 'discount' => 0, 'gst' => 4500, 'total' => 29500],
                 ]
+            ],
+            [
+                'name' => 'IVR',
+                'details' => [
+                    ['quantity' => 'forwateforward to another', 'cost' => 0, 'with_out' => 0, 'amount' => 15000, 'discount' => 0, 'gst' => 0, 'total' => 0]
+                ]
             ]
         ];
 

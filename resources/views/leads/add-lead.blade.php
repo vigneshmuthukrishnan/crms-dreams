@@ -44,6 +44,33 @@
                         <input type="text" class="form-control phone" name="number" placeholder="Enter Phone Number" required>
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="mb-2">
+                    <label class="form-label">Product<span class="text-danger">*</span></label>
+                        <ul class="radio-activity">
+                            @foreach($products as $product)
+                                <li class="me-2 mb-2">
+                                    <div class="active-type">
+                                        <input type="radio" id="product_{{ $product->id }}" name="product" value="{{ $product->id }}" checked>
+                                        <label for="product_{{ $product->id }}" class="rounded">
+                                            <i class="{{ $icons[$product->name] ?? 'ti ti-box' }} me-2"></i>
+                                            {{ $product->name }}
+                                        </label>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Packages <span class="text-danger ms-1">*</span></label>
+                        <select class="form-control" data-toggle="select2" name="package" id="product_to_packages" required>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Date <span class="text-danger ms-1">*</span></label>
@@ -60,19 +87,7 @@
                             @endforeach
                         </select>
                     </div>
-                </div> 
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">Packages<span class="text-danger ms-1">*</span></label>
-                        <select class="form-control" data-toggle="select2" name="package" required>
-                            <option value="">Select</option>
-                            @foreach($packages as $package)
-                                <option value="{{ $package->id }}" >{{ $package->package_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> 
-                 
+                </div>                 
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Type <span class="text-danger ms-1">*</span></label>

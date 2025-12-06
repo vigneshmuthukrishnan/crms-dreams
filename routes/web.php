@@ -7,6 +7,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\BulkSmsPackageController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,9 +61,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/leads/{id}', [LeadController::class, 'show'])->name('leads.show'); 
 
     // lead activities
-    Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add');
-
+    Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add'); 
     
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    ROute::post('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/packages-by-product/{productId}', [ProductController::class, 'getPackagesByProduct']);
+
 });
 
 // Admin can do user management

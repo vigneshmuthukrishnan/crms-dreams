@@ -16,7 +16,7 @@ class Product extends Model
         'description',
     ];
 
-    // relation to product details
+    // relation to product details 
     public function details()
     {
         return $this->hasMany(ProductDetail::class, 'product_id');
