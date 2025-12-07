@@ -31,13 +31,13 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label class="form-label">Company Name<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" value="{{ $company->name }}" name="name" placeholder="Enter Company Name" required>
+                                <input type="text" class="form-control" value="{{ $company->name }}" name="name" placeholder="Enter Company Name" required readonly>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label class="form-label">Email <span class="text-danger ms-1">*</span></label>
-                                <input type="text" class="form-control" value="{{ $company->email }}" name="email" placeholder="Enter Email" required>
+                                <input type="text" class="form-control" value="{{ $company->email }}" name="email" placeholder="Enter Email" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -81,11 +81,9 @@
                                 <label class="form-label">Source <span class="text-danger">*</span></label>
                                 <select class="form-control" data-toggle="select2" name="source" required>
                                     <option>Select</option>
-                                    <option {{ $company->source == 'Phone Calls' ? 'selected' : '' }}>Phone Calls</option>
-                                    <option {{ $company->source == 'Social Media' ? 'selected' : '' }}>Social Media</option>
-                                    <option {{ $company->source == 'Referral Sites' ? 'selected' : '' }}>Referral Sites</option>
-                                    <option {{ $company->source == 'Web Analytics' ? 'selected' : '' }}>Web Analytics</option>
-                                    <option {{ $company->source == 'Previous Purchases' ? 'selected' : '' }}>Previous Purchases</option>
+                                    @foreach($sources as $source)
+                                        <option value="{{ $source }}" {{ $company->source == $source ? 'selected' : '' }}>{{ $source }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -94,11 +92,9 @@
                                 <label class="form-label">Industry <span class="text-danger">*</span></label>
                                 <select class="form-control" name="industry" required>
                                     <option>Select</option>
-                                    <option {{ $company->industry == 'Retail Industry' ? 'selected' : '' }}>Retail Industry</option>
-                                    <option {{ $company->industry == 'Banking' ? 'selected' : '' }}>Banking</option>
-                                    <option {{ $company->industry == 'Hotels' ? 'selected' : '' }}>Hotels</option>
-                                    <option {{ $company->industry == 'Financial Services' ? 'selected' : '' }}>Financial Services</option>
-                                    <option {{ $company->industry == 'Insurance' ? 'selected' : '' }}>Insurance</option>
+                                    @foreach($industrys as $industry)
+                                        <option value="{{ $industry }}" {{ $company->industry == $industry ? 'selected' : '' }}>{{ $industry }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -132,25 +128,25 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Country</label>
-                                <select class="form-control" name="country">
+                                <select class="form-control" name="country" id="editcountry">
                                     <option value="" >Select</option>
-                                    <option value="india" {{ $company->country == 'india' ? 'selected' : '' }}>India</option>
+                                    <option value="India" {{ $company->country == 'India' ? 'selected' : '' }}>India</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">State</label>
-                                <select class="form-control" name="state">
+                                <select class="form-control" name="state" id="editstate">
                                     <option value="">Select</option>
-                                    <option value="taminadu" {{ $company->state == 'taminadu' ? 'selected' : '' }}>Tamil nadu</option>
+                                    <option value="taminadu" {{ $company->state == 'Tamil Nadu' ? 'selected' : '' }}>Tamil Nadu</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3 mb-md-0">
                                 <label class="form-label">City </label>
-                                <select class="form-control" name="city">
+                                <select class="form-control" name="city" id="editcity">
                                     <option>Select</option>
                                 </select>
                             </div>
@@ -210,3 +206,59 @@
         <button type="submit" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#create_success">Update</button>
     </div>
 </form>
+
+<script>
+    $(document).ready(function(){
+        let selectcountry = "{{ $company->country }}";
+        let selectedState = "{{ $company->state }}";
+        let selectcity = "{{ $company->city }}";
+
+        $('select[name="country"]').val(selectcountry).trigger('change');
+    });
+    $(document).on('change', '#editcountry', function (e) {
+        let country = $(this).val();
+        if(country === "India"){
+            $.ajax({
+                url: "https://countriesnow.space/api/v0.1/countries/states",
+                method: "POST",
+                data: JSON.stringify({ country: country}),
+                contentType: "application/json",
+                success: function(response){
+                    $("#editstate").empty().append('<option>Select State</option>');
+                    let selectedState = "{{ $company->state }}";
+                    $.each(response.data.states, function(index, state){
+                        if(selectedState == state.name){
+                            $("#editstate").append('<option value="'+state.name+'" selected>'+state.name+'</option>');
+                        } else {
+                            $("#editstate").append('<option value="'+state.name+'">'+state.name+'</option>');
+                        }
+                    });
+                    loadCitiesForEdit();
+                }
+            });
+        }
+    });
+
+
+    function loadCitiesForEdit(){
+        let state = $('#editstate').val();
+        $.ajax({
+            url: "https://countriesnow.space/api/v0.1/countries/state/cities",
+            method: "POST",
+            data: JSON.stringify({ country: "India", state: state }),
+            contentType: "application/json",
+            success: function(response){
+                $("#editcity").empty().append('<option>Select City</option>');
+                let selectcity = "{{ $company->city }}";
+                $.each(response.data, function(index, city){
+                    if(selectcity == city){
+                        $("#editcity").append('<option value="'+city+'" selected >'+city+'</option>');
+                    } else {
+                        $("#editcity").append('<option value="'+city+'">'+city+'</option>');
+                    }
+                });
+            }
+        });
+    }    
+
+</script>

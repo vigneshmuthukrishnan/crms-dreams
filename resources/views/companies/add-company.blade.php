@@ -87,11 +87,9 @@
                                         <label class="form-label">Source <span class="text-danger">*</span></label>
                                         <select class="form-control" data-toggle="select2" name="source" required>
                                             <option>Select</option>
-                                            <option>Phone Calls</option>
-                                            <option>Social Media</option>
-                                            <option>Referral Sites</option>
-                                            <option>Web Analytics</option>
-                                            <option>Previous Purchases</option>
+                                            @foreach($sources as $source)
+                                                <option value="{{ $source }}">{{ $source }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -100,11 +98,9 @@
                                         <label class="form-label">Industry <span class="text-danger">*</span></label>
                                         <select class="form-control" name="industry" required>
                                             <option>Select</option>
-                                            <option>Retail Industry</option>
-                                            <option>Banking</option>
-                                            <option>Hotels</option>
-                                            <option>Financial Services</option>
-                                            <option>Insurance</option>
+                                            @foreach($industrys as $industry)
+                                                <option value="{{ $industry }}">{{ $industry }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -138,26 +134,23 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Country</label>
-                                        <select class="form-control" name="country">
+                                        <select class="form-control" name="country" id="country">
                                             <option value="" >Select</option>
-                                            <option value="india">India</option>
+                                            <option value="India">India</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">State</label>
-                                        <select class="form-control" name="state">
-                                            <option value="">Select</option>
-                                            <option value="taminadu">Tamil nadu</option>
+                                        <select class="form-control" name="state" id="state">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3 mb-md-0">
                                         <label class="form-label">City </label>
-                                        <select class="form-control" name="city">
-                                            <option>Select</option>
+                                        <select class="form-control" name="city" id="city">
                                         </select>
                                     </div>
                                 </div>

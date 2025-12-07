@@ -63,7 +63,7 @@
                                                 <i class="ti ti-mail"></i>
                                             </span>
                                         </div>
-                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                        <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
@@ -73,9 +73,9 @@
                                                 <i class="ti ti-eye-off"></i>
                                             </span>
                                         </div>
-                                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                        <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <!-- <div class="d-flex align-items-center justify-content-between mb-3">
                                         <div class="form-check form-check-md d-flex align-items-center">
                                             <input class="form-check-input mt-0" type="checkbox" value="" id="checkebox-md" checked="">
                                             <label class="form-check-label text-dark ms-1" for="checkebox-md">
@@ -85,14 +85,14 @@
                                         <div class="text-end">
                                             <a href="forgot-password.html" class="link-danger fw-medium link-hover">Forgot Password?</a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="mb-3">
                                         <button type="submit" class="btn btn-primary w-100">Sign In</button>
                                     </div>
-                                    <div class="mb-3">
+                                    <!-- <div class="mb-3">
                                         <p class="mb-0">New on our platform?<a href="register.html" class="link-indigo fw-bold link-hover"> Create an account</a></p>
-                                    </div>
-                                    <div class="or-login text-center position-relative mb-3">
+                                    </div> -->
+                                    <!-- <div class="or-login text-center position-relative mb-3">
                                         <h6 class="fs-14 mb-0 position-relative text-body">OR</h6>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center flex-wrap gap-2 mb-3">
@@ -111,7 +111,7 @@
                                                 <img class="img-fluid  m-1" src="assets/img/icons/apple-logo.svg" alt="Apple">
                                             </a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="text-center pb-4">
                                     <p class="text-dark mb-0">Copyright &copy; <script type="58cd591a6bd6d6a180912a0b-text/javascript">document.write(new Date().getFullYear())</script> - CRMS</p>

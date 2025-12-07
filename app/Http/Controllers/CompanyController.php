@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\models\Lead;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -63,10 +64,10 @@ class CompanyController extends Controller
                                     <i class="ti ti-dots-vertical"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item edit-user" href="javascript:void(0);" data-id="'.$row->id.'" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
+                                    <a class="dropdown-item edit-company" href="javascript:void(0);" data-id="'.$row->id.'" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
                                         <i class="ti ti-edit text-blue"></i> Edit
                                     </a>
-                                    <a class="dropdown-item delete-user" href="#" data-id="'.$row->id.'" data-bs-toggle="modal" data-bs-target="#delete_contact">
+                                    <a class="dropdown-item delete-company" href="#" data-id="'.$row->id.'" data-bs-toggle="modal" data-bs-target="#delete_contact">
                                         <i class="ti ti-trash"></i> Delete
                                     </a>
                                     <a class="dropdown-item" href="'.$previewUrl.'">
@@ -89,110 +90,143 @@ class CompanyController extends Controller
 
         $companies = Company::latest()->take($limit)->get();
         $companycount = Company::count();
-        return view('companies.index', compact('companies','companycount'));
+        $industrys = config('static.industrys');
+        $sources = config('static.lead_sources');
+        return view('companies.index', compact('companies','companycount', 'industrys', 'sources'));
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone_1' => 'required|string|max:20',
-            'source' => 'required|string|max:255',
-            'industry' => 'required|string|max:255',
-            'phone_2' => 'nullable|string|max:20',
-            'fax' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-            'website' => 'nullable|url|max:255',
-            'owner' => 'nullable|string|max:255',
-            'tags' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'country' => 'nullable|string|max:100',
-            'state' => 'nullable|string|max:100',
-            'city' => 'nullable|string|max:100',
-            'zipcode' => 'nullable|string|max:20',
-            'facebook_url' => 'nullable|url|max:255',
-            'linkedin_url' => 'nullable|url|max:255',
-            'instagram_url' => 'nullable|url|max:255', 
-            'whatsapp_url' => 'nullable|url|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-        if ($validator->fails()) {
-            if ($request->expectsJson()) {
-                $errors = $validator->errors()->all();
-                $errorMessage = implode(', ', $errors);
-                return response()->json(['success' => false, 'message' => $errorMessage], 422);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone_1' => 'required|string|max:20',
+                'source' => 'required|string|max:255',
+                'industry' => 'required|string|max:255',
+                'phone_2' => 'nullable|string|max:20',
+                'fax' => 'nullable|string|max:20',
+                'address' => 'nullable|string|max:500',
+                'website' => 'nullable|url|max:255',
+                'owner' => 'nullable|string|max:255',
+                'tags' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+                'country' => 'nullable|string|max:100',
+                'state' => 'nullable|string|max:100',
+                'city' => 'nullable|string|max:100',
+                'zipcode' => 'nullable|string|max:20',
+                'facebook_url' => 'nullable|url|max:255',
+                'linkedin_url' => 'nullable|url|max:255',
+                'instagram_url' => 'nullable|url|max:255', 
+                'whatsapp_url' => 'nullable|url|max:255',
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            ]);
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    $errors = $validator->errors()->all();
+                    $errorMessage = implode(', ', $errors);
+                    return response()->json(['success' => false, 'message' => $errorMessage], 422);
+                }
+                return back()->withErrors($validator)->withInput();
             }
-            return back()->withErrors($validator)->withInput();
+            $validated = $validator->validated();
+
+            if ($request->hasFile('logo')) {
+                $logoPath = $request->file('logo')->store('logos', 'public');
+                $validated['logo'] = $logoPath;
+            }
+
+            $company = new Company($validated);
+            $company->created_by = Auth::id();
+            $company->save();
+            return redirect()->route('companies.index')->with('success', 'Company created successfully.');
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
-        $validated = $validator->validated();
-
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('logos', 'public');
-            $validated['logo'] = $logoPath;
-        }
-
-        $company = new Company($validated);
-        $company->created_by = Auth::id();
-        $company->save();
-
-        return redirect()->route('companies.index')->with('success', 'Company created successfully.');
     }
 
 
     public function update(Request $request, $id)
     {
-        $company = Company::findOrFail($id);
+        try {
+            $company = Company::findOrFail($id);
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'nullable|email|max:255',
+                'phone_1' => 'nullable|string|max:20',
+                'phone_2' => 'nullable|string|max:20',
+                'address' => 'nullable|string|max:500',
+                'website' => 'nullable|url|max:255',
+                'owner' => 'nullable|string|max:255',
+                'source' => 'nullable|string|max:255',
+                'industry' => 'nullable|string|max:255',
+                'tags' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+                'country' => 'nullable|string|max:100',
+                'state' => 'nullable|string|max:100',
+                'city' => 'nullable|string|max:100',
+                'zipcode' => 'nullable|string|max:20',
+                'facebook_url' => 'nullable|url|max:255',
+                'linkedin_url' => 'nullable|url|max:255',
+                'instagram_url' => 'nullable|url|max:255', 
+            ]);
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'phone_1' => 'nullable|string|max:20',
-            'phone_2' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-            'website' => 'nullable|url|max:255',
-            'owner' => 'nullable|string|max:255',
-            'source' => 'nullable|string|max:255',
-            'industry' => 'nullable|string|max:255',
-            'tags' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'country' => 'nullable|string|max:100',
-            'state' => 'nullable|string|max:100',
-            'city' => 'nullable|string|max:100',
-            'zipcode' => 'nullable|string|max:20',
-            'facebook_url' => 'nullable|url|max:255',
-            'linkedin_url' => 'nullable|url|max:255',
-            'instagram_url' => 'nullable|url|max:255', 
-        ]);
-
-        if ($validator->fails()) {
-            if ($request->expectsJson()) {
-                $errors = $validator->errors()->all();
-                $errorMessage = implode(', ', $errors);
-                return response()->json(['success' => false, 'message' => $errorMessage], 422);
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    $errors = $validator->errors()->all();
+                    $errorMessage = implode(', ', $errors);
+                    return response()->json(['success' => false, 'message' => $errorMessage], 422);
+                }
+                return back()->withErrors($validator)->withInput();
             }
-            return back()->withErrors($validator)->withInput();
-        }
 
-        $company->update($validator->validated());
-        $company->updated_by = Auth::id();
-        $company->save();
-        
-        return response()->json(['success' => true, 'message' => 'Company updated successfully.']);
+            $company->update($validator->validated());
+            $company->updated_by = Auth::id();
+            $company->save();
+            return response()->json(['success' => true, 'message' => 'Company updated successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
 
     public function show(Request $request, $id)
     {
-        $company = Company::findOrFail($id);
-        $companycount = Company::count();
-        return view('companies.show', compact('company','companycount'));
+        try {
+            $company = Company::findOrFail($id);
+            $companycount = Company::count();
+            return view('companies.show', compact('company','companycount'));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }   
 
     public function edit($id)
     {
-        $company = Company::findOrFail($id);
-        return view('companies.edit', compact('company'));
+        try {
+            $company = Company::findOrFail($id);
+            $industrys = config('static.industrys');
+            $sources = config('static.lead_sources');
+            return view('companies.edit', compact('company', 'industrys', 'sources'));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // delete company
+    public function destroy($id)
+    {
+        try {
+            $company = Company::findOrFail($id);
+            $lead = Lead::where('company_id', $company->id)->get();
+            if ($lead->count() > 0) {
+                return response()->json(['success' => false, 'message' => 'Cannot delete company with associated leads.'], 400);
+            }
+            $company->delete();
+            return response()->json(['success' => true, 'message' => 'Company deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }
 

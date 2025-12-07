@@ -31,11 +31,17 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
+        if($user->status != 1){
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return back()->withErrors(['email' => 'Your account is inactive. Please contact admin.',]);
+        }
         if ($user->admin == 0) {
             $today = date('Y-m-d');
-            $attendance = \App\Models\Attendance::where('user_id', $user->id)->where('date', $today)->first();
+            $attendance = Attendance::where('user_id', $user->id)->where('date', $today)->first();
             if(!$attendance){
-                \App\Models\Attendance::create([
+                Attendance::create([
                     'user_id'    => $user->id,
                     'date'       => $today,
                     'login_time' => now(),

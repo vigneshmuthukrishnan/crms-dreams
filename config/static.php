@@ -20,5 +20,10 @@ return [
         'VoiceCall' => 'ti ti-phone',
         'RCS' => 'ti ti-message',
         'IVR' => 'ti ti-microphone',
-    ]
+    ],
+    'industrys' => [
+        'Retail Industry', 'Banking', 'Insurance', 'Financial Services', 'Healthcare', 
+        'Hospitality', 'Manufacturing', 'Real Estate', 'Retail', 'Technology', 
+        'Telecommunications', 'Transportation', 'Other'
+    ],
 ];

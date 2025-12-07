@@ -31,7 +31,12 @@ class Company extends Model
     // how to create attributes
     public function getLogoUrlAttribute()
     {
-        return $this->logo ? asset($this->logo) : null;
+        // here storage path to url conversion logic
+        return $this->logo ? asset('storage/' . $this->logo) : null;
     }
 
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'company_id');
+    }
 }

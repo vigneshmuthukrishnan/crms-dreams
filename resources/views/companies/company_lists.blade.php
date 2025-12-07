@@ -9,7 +9,6 @@
                         <th>Phone</th>
                         <th>Email</th>
                         <th>Address</th>
-                        <th>Status</th>
                         <th class="text-end no-sort">Action</th>
                     </tr>
                 </thead>

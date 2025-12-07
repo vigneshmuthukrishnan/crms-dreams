@@ -60,7 +60,7 @@
     </div>
 </x-app-layout>
 
-@include('companies.add-company')
+@include('companies.add-company', compact('industrys', 'sources'))
 
 <div class="offcanvas offcanvas-end offcanvas-large" tabindex="-1" id="offcanvas_edit">
     <div class="offcanvas-header border-bottom">
@@ -113,7 +113,6 @@
                     {data: 'phone', name: 'phone', orderable: false, searchable: true},
                     {data: 'email', name: 'email', orderable: false, searchable: true},
                     {data: 'address', name: 'address', orderable: false, searchable: true},
-                    {data: 'status', name: 'status', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
             });
@@ -205,21 +204,20 @@
                     location.reload();
                 },
                 error: function (xhr) {
-                    errorMsg('An error occurred while creating the company.');
+                    errorMsg(xhr.responseJSON.message || 'An error occurred while creating the company.');
                 }
             });
         });
     });
 
-    $(document).on('click', '.edit-user', function() {
+    $(document).on('click', '.edit-company', function() {
         const userId = $(this).data('id');
         $.ajax({
             url: "{{ url('companies/edit') }}/" + userId,
             type: 'GET',
             success: function(response) {
+                $('#offcanvas_edit').offcanvas('show');
                 $('#offcanvas_edit .offcanvas-body').html(response);
-                const offcanvasEdit = new bootstrap.Offcanvas(document.getElementById('offcanvas_edit'));
-                offcanvasEdit.show();
             },
             error: function() {
                 errorMsg('Failed to load edit form.');
@@ -249,5 +247,69 @@
         });
     });
 
+    // delete company
+    $(document).on('click', '.delete-company', function() {
+        var companyId = $(this).data('id');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('companies/delete') }}/" + companyId,
+                    type: "DELETE",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        successMsg('Company deleted successfully!');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        errorMsg(xhr.responseJSON.message || 'An error occurred while deleting the user.');
+                    }
+                });
+            }
+        });
+    });
 
+    
+    $(document).on('change', '#country', function (e) {
+        let country = $(this).val();
+        if(country === "India"){
+            $.ajax({
+                url: "https://countriesnow.space/api/v0.1/countries/states",
+                method: "POST",
+                data: JSON.stringify({ country: "India"}),
+                contentType: "application/json",
+                success: function(response){
+                    $("#state").empty().append('<option>Select State</option>');
+                    $.each(response.data.states, function(index, state){
+                        $("#state").append('<option value="'+state.name+'">'+state.name+'</option>');
+                    });
+                }
+            });
+        }
+    });
+
+    $(document).on('change', '#state', function (e) {
+        let state = $(this).val();
+        $.ajax({
+            url: "https://countriesnow.space/api/v0.1/countries/state/cities",
+            method: "POST",
+            data: JSON.stringify({ country: "India", state: state}),
+            contentType: "application/json",
+            success: function(response){
+                $("#city").empty().append('<option>Select City</option>');
+                $.each(response.data, function(index, city){
+                    $("#city").append('<option value="'+city+'">'+city+'</option>');
+                });
+            }
+        });
+    });
 </script>
