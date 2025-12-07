@@ -137,10 +137,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">State</label>
-                                <select class="form-control" name="state" id="editstate">
-                                    <option value="">Select</option>
-                                    <option value="taminadu" {{ $company->state == 'Tamil Nadu' ? 'selected' : '' }}>Tamil Nadu</option>
-                                </select>
+                                <select class="form-control" name="state" id="editstate"></select>
                             </div>
                         </div>
                         <div class="col-md-6">

@@ -12,7 +12,7 @@
                 </nav>
             </div>
             <div class="gap-2 d-flex align-items-center flex-wrap">
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-light px-2 shadow" data-bs-toggle="dropdown"><i class="ti ti-package-export me-2"></i>Export</a>
                     <div class="dropdown-menu  dropdown-menu-end">
                         <ul>
@@ -26,7 +26,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
                 <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add User</a>
             </div>
         </div>                

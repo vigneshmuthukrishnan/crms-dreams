@@ -1,19 +1,5 @@
 <x-app-layout>
     <div class="content pb-0">
-        <!-- <div class="d-flex align-items-center justify-content-between gap-2 mb-4 flex-wrap">
-            <div>
-                <h4 class="mb-1">Leads<span class="badge badge-soft-primary ms-2">{{$leadCount}}</span></h4>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ url('/leads') }}">Leads</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ $lead->name}}</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="gap-2 d-flex align-items-center flex-wrap">
-            </div>
-        </div>   -->
 
         <div class="row">
             <div class="col-md-12">
@@ -36,24 +22,11 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center flex-wrap gap-2">
-                            <a href="#" class="avatar avatar-sm border shadow text-dark"><i class="ti ti-star-filled fs-16 text-warning"></i></a>
                             @if(!empty($lead->email))
                                 <a href="mailto:{{ $lead->email }}" class="btn btn-primary">
                                     <i class="ti ti-mail me-1"></i>Send Email
                                 </a>
                             @endif
-                            <a href="" class="action-icon btn btn-icon btn-sm btn-outline-light shadow">
-                                <i class="ti ti-brand-hipchat"></i>
-                            </a>
-                            <a href="#" class="btn btn-icon btn-sm btn-outline-light shadow" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit"><i class="ti ti-edit-circle"></i></a>
-                            <div class="act-dropdown">
-                                <a href="#" data-bs-toggle="dropdown" class="action-icon btn btn-icon btn-sm btn-outline-light shadow" aria-expanded="false">
-                                    <i class="ti ti-dots-vertical"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_contact"><i class="ti ti-trash me-1"></i>Delete</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,7 +53,7 @@
                                 <span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2">
                                     <i class="ti ti-map-pin-pin fs-14"></i>
                                 </span>
-                                <p class="mb-0">{{ $lead->state ?? 'N/A' }}</p>
+                                <p class="mb-0">{{ $lead->state ?? 'N/A' }}, {{ $lead->city ?? 'N/A' }}</p>
                             </div>
                             <div class="d-flex align-items-center">
                                 <span

@@ -52,7 +52,7 @@
                             @foreach($products as $product)
                                 <li class="me-2 mb-2">
                                     <div class="active-type">
-                                        <input type="radio" id="product_{{ $product->id }}" name="product" value="{{ $product->id }}" checked>
+                                        <input type="radio" id="product_{{ $product->id }}" name="product" value="{{ $product->id }}">
                                         <label for="product_{{ $product->id }}" class="rounded">
                                             <i class="{{ $icons[$product->name] ?? 'ti ti-box' }} me-2"></i>
                                             {{ $product->name }}
@@ -101,12 +101,6 @@
                 </div>  
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label class="form-label">Next Action Date <span class="text-danger ms-1">*</span></label>
-                        <input type="date" class="form-control" name="next_action_date" placeholder="Enter Date">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
                         <label class="form-label">Status <span class="text-danger ms-1">*</span></label>
                         <select class="form-control" data-toggle="select2" name="status" required>
                             <option value="" >Select</option>
@@ -116,6 +110,18 @@
                         </select>
                     </div>
                 </div>  
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">State</label>
+                        <select class="form-control" name="state" id="state"></select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3 mb-md-0">
+                        <label class="form-label">City </label>
+                        <select class="form-control" name="city" id="city"></select>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="mb-00">
                         <label class="form-label">Description<span class="text-danger ms-1">*</span></label>
@@ -131,4 +137,35 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            url: "https://countriesnow.space/api/v0.1/countries/states",
+            method: "POST",
+            data: JSON.stringify({ country: "India"}),
+            contentType: "application/json",
+            success: function(response){
+                $("#state").empty().append('<option>Select State</option>');
+                $.each(response.data.states, function(index, state){
+                    $("#state").append('<option value="'+state.name+'">'+state.name+'</option>');
+                });
+            }
+        });
 
+    })
+    $(document).on('change', '#state', function (e) {
+        let state = $(this).val();
+        $.ajax({
+            url: "https://countriesnow.space/api/v0.1/countries/state/cities",
+            method: "POST",
+            data: JSON.stringify({ country: "India", state: state}),
+            contentType: "application/json",
+            success: function(response){
+                $("#city").empty().append('<option>Select City</option>');
+                $.each(response.data, function(index, city){
+                    $("#city").append('<option value="'+city+'">'+city+'</option>');
+                });
+            }
+        });
+    });
+</script>

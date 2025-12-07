@@ -12,7 +12,7 @@
                 </nav>
             </div>
             <div class="gap-2 d-flex align-items-center flex-wrap">
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-light px-2 shadow" data-bs-toggle="dropdown"><i class="ti ti-package-export me-2"></i>Export</a>
                     <div class="dropdown-menu  dropdown-menu-end">
                         <ul>
@@ -24,7 +24,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
                 <div class="d-flex align-items-center shadow p-1 rounded border view-icons bg-white">
                     <a href="{{ route('companies.index', ['pagetype' => 'list']) }}" class="btn btn-sm p-1 border-0 fs-14 {{ request('pagetype') == 'list' ? 'active' : '' }}"><i class="ti ti-list-tree"></i></a>
                     <a href="{{ route('companies.index', ['pagetype' => 'grid']) }}" class="flex-shrink-0 btn btn-sm p-1 border-0 ms-1 fs-14 {{ request('pagetype') != 'list' ? 'active' : '' }}"><i class="ti ti-grid-dots"></i></a>
@@ -219,8 +219,8 @@
                 $('#offcanvas_edit').offcanvas('show');
                 $('#offcanvas_edit .offcanvas-body').html(response);
             },
-            error: function() {
-                errorMsg('Failed to load edit form.');
+            error: function(xhr) {
+                errorMsg(xhr.responseJSON.message || 'Failed to load edit form.');
             }
         });
     });
@@ -241,8 +241,8 @@
                 successMsg('Company updated successfully!');
                 location.reload();
             },
-            error: function () {
-                errorMsg('An error occurred while updating the company.');
+            error: function (xhr) {
+                errorMsg(xhr.responseJSON.message || 'An error occurred while updating the company.');
             }
         });
     });

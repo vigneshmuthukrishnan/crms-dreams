@@ -26,6 +26,8 @@ class Lead extends Model
         'amount',
         'next_action_date',
         'status',
+        'state',
+        'city',
         'remarks',
         'assignee',
     ];

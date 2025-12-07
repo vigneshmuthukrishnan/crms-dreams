@@ -12,7 +12,7 @@
                 </nav>
             </div>
             <div class="gap-2 d-flex align-items-center flex-wrap">
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-light px-2 shadow" data-bs-toggle="dropdown"><i class="ti ti-package-export me-2"></i>Export</a>
                     <div class="dropdown-menu  dropdown-menu-end">
                         <ul>
@@ -24,7 +24,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
                 <div class="d-flex align-items-center shadow p-1 rounded border view-icons bg-white">
                     <a href="{{ route('leads.index', ['pagetype' => 'list']) }}" class="btn btn-sm p-1 border-0 fs-14 {{ request('pagetype') == 'list' ? 'active' : '' }}"><i class="ti ti-list-tree"></i></a>
                     <a href="{{ route('leads.index', ['pagetype' => 'grid']) }}" class="flex-shrink-0 btn btn-sm p-1 border-0 ms-1 fs-14 {{ request('pagetype') != 'list' ? 'active' : '' }}"><i class="ti ti-grid-dots"></i></a>
@@ -208,7 +208,7 @@
             });
         });
 
-        $(".company_lists").select2({
+        $(".company_listss").select2({
             width: 'resolve'
         });
 
@@ -234,15 +234,14 @@
         });
     });
 
-    $(document).on('click', '.edit-user', function() {
-        const userId = $(this).data('id');
+    $(document).on('click', '.edit-lead', function() {
+        const id = $(this).data('id');
         $.ajax({
-            url: "{{ url('companies/edit') }}/" + userId,
+            url: "{{ url('leads/edit') }}/" + id,
             type: 'GET',
             success: function(response) {
                 $('#offcanvas_edit .offcanvas-body').html(response);
-                const offcanvasEdit = new bootstrap.Offcanvas(document.getElementById('offcanvas_edit'));
-                offcanvasEdit.show();
+                $('#offcanvas_edit').offcanvas('show');
             },
             error: function() {
                 errorMsg('Failed to load edit form.');
@@ -250,27 +249,55 @@
         });
     });
 
-    $(document).on('submit', '#updateCompanyForm', function (e) {
+    $(document).on('submit', '#updateLeadForm', function (e) {
         e.preventDefault();
 
         var formData = new FormData(this);
-        var companyId = $('#company_id').val(); // Read ID correctly
+        var leadId = $('#lead_id').val(); // Read ID correctly
 
         $.ajax({
             type: 'POST',
-            url: "{{ url('/companies/update') }}/" + companyId, // Correct dynamic route
+            url: "{{ url('/leads/update') }}/" + leadId, // Correct dynamic route
             data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
-                successMsg('Company updated successfully!');
+                successMsg('Lead updated successfully!');
                 location.reload();
             },
-            error: function () {
-                errorMsg('An error occurred while updating the company.');
+            error: function (xhr) {
+                errorMsg(xhr.responseJSON.message || 'An error occurred while updating the lead.');
             }
         });
     });
 
-
+    $(document).on('click', '.delete-lead', function() {
+        var leadId = $(this).data('id');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ url('leads/delete') }}/" + leadId,
+                    type: "DELETE",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        successMsg('Lead deleted successfully!');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        errorMsg(xhr.responseJSON.message || 'An error occurred while deleting the user.');
+                    }
+                });
+            }
+        });
+    });
 </script>

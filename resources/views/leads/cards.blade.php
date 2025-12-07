@@ -29,10 +29,10 @@
                             <i class="ti ti-dots-vertical"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item edit-user" data-id="{{ $lead->id }}" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
+                            <a class="dropdown-item edit-lead" data-id="{{ $lead->id }}" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
                                 <i class="ti ti-edit text-blue"></i> Edit
                             </a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-id="{{ $lead->id }}" data-bs-target="#delete_contact">
+                            <a class="dropdown-item delete-lead" href="#" data-bs-toggle="modal" data-id="{{ $lead->id }}" data-bs-target="#delete_contact">
                                 <i class="ti ti-trash"></i> Delete
                             </a>
                             <a class="dropdown-item" href="{{ url('/leads/'.$lead->id) }}">
@@ -51,7 +51,7 @@
                             <i class="ti ti-phone text-dark me-1"></i>{{ $lead->number ?? 'N/A' }}
                         </p>
                         <p class="text-default d-inline-flex align-items-center">
-                            <i class="ti ti-map-pin-pin text-dark me-1"></i>{{ $lead->address ?? 'N/A' }}
+                            <i class="ti ti-map-pin-pin text-dark me-1"></i>{{ $lead->state ?? 'N/A' }}, {{ $lead->city ?? 'N/A' }}
                         </p>
                     </div>
                 </div>
@@ -73,7 +73,6 @@
                             </a>
                         @endif
                     </div>
-                    <div> {{$lead->user->name}} </div>
                     <div>
                         <span class="avatar avatar-xs border-0">
                             <img src="{{ user_avatar($lead->user->name) }}"

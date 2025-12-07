@@ -71,10 +71,10 @@ class LeadController extends Controller
                                     <i class="ti ti-dots-vertical"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item edit-user" href="javascript:void(0);" data-id="'.$row->id.'" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
+                                    <a class="dropdown-item edit-lead" href="javascript:void(0);" data-id="'.$row->id.'" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
                                         <i class="ti ti-edit text-blue"></i> Edit
                                     </a>
-                                    <a class="dropdown-item delete-user" href="#" data-id="'.$row->id.'" data-bs-toggle="modal" data-bs-target="#delete_contact">
+                                    <a class="dropdown-item delete-lead" href="#" data-id="'.$row->id.'" data-bs-toggle="modal" data-bs-target="#delete_contact">
                                         <i class="ti ti-trash"></i> Delete
                                     </a>
                                     <a class="dropdown-item" href="'.$previewUrl.'">
@@ -108,80 +108,115 @@ class LeadController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'customer_name' => 'required|string',
-            'company_type' => 'required|string',
-            'lead_source' => 'required|string',
-            'number' => 'required|string',
-            'email' => 'required|email',
-            'date' => 'required|date',
-            'product' => 'required|string',
-            'package' => 'required|string',
-            'next_action_date' => 'required|date',
-            'status' => 'required|string',
-            'remarks' => 'required|string',
-        ]);
-        if ($validator->fails()) {
-            if ($request->expectsJson()) {
-                $errors = $validator->errors()->all();
-                $errorMessage = implode(', ', $errors);
-                return response()->json(['success' => false, 'message' => $errorMessage], 422);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+                'customer_name' => 'required|string',
+                'company_type' => 'required|string',
+                'lead_source' => 'required|string',
+                'number' => 'required|string',
+                'email' => 'required|email',
+                'date' => 'required|date',
+                'product' => 'required|string',
+                'package' => 'required|string',
+                'status' => 'required|string',
+                'remarks' => 'required|string',
+                'state' => 'required|string',
+                'city' => 'required|string',
+            ]);
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    $errors = $validator->errors()->all();
+                    $errorMessage = implode(', ', $errors);
+                    return response()->json(['success' => false, 'message' => $errorMessage], 422);
+                }
+                return back()->withErrors($validator)->withInput();
             }
-            return back()->withErrors($validator)->withInput();
-        }
-        $validated = $validator->validated();
-
-        $lead = Lead::create($validated);
-        $lead->company_name = $request->company_name;
-        $lead->company_id = $request->company_id;
-        $lead->plan = $request->product;
-        $lead->assignee = auth()->user()->id;
-        $lead->save();
-
-        // here add first activity for lead creation
-        // LeadActivity::create([
-        //     'lead_id' => $lead->id,
-        //     'name' => 'Lead Created',
-        //     'type' => 'Calls',
-        //     'date' => now()->toDateString(),
-        //     'time' => now()->toTimeString(),
-        //     'remarks' => $request->remarks,
-        //     'next_action_date' => $request->next_action_date,
-        //     'status' => $request->status,
-        //     'created_by' => auth()->user()->id,
-        //     'updated_by' => auth()->user()->id,
-        // ]);
-
-        return response()->json(['success' => true, 'message' => 'Lead created successfully!', 'lead' => $lead], 201);
+            $validated = $validator->validated();
+    
+            $lead = Lead::create($validated);
+            $lead->company_name = $request->company_name;
+            $lead->company_id = $request->company_id;
+            $lead->plan = $request->product;
+            $lead->assignee = auth()->user()->id;
+            $lead->save();
+            return response()->json(['success' => true, 'message' => 'Lead created successfully!', 'lead' => $lead], 201);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        } 
     }
 
     public function show(Request $request,  $id)
     {
-        $lead = Lead::findOrFail($id);
-        if($lead){
-            $leadCount = Lead::count();
-            $products = Product::where('id', $lead->plan)->first();
-            $packages = ProductDetail::where('id', $lead->package)->first();
-            $lead_status = config('static.lead_status');
-            return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages'));
+        try {
+            $lead = Lead::findOrFail($id);
+            if($lead){
+                $leadCount = Lead::count();
+                $products = Product::where('id', $lead->plan)->first();
+                $packages = ProductDetail::where('id', $lead->package)->first();
+                $lead_status = config('static.lead_status');
+                return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages'));
+            }
+            return redirect()->route('leads.index')->with('error', 'Lead not found.');
+        }  catch (\Exception $e) {
+            return redirect()->route('leads.index')->with('error', $e->getMessage());
         }
-        return redirect()->route('leads.index')->with('error', 'Lead not found.');
     }
 
     public function edit(Request $request, $id)
     {
-        //
+        try {
+            $lead = Lead::findOrFail($id);
+            $companies = Company::all();
+            $company_types = config('static.company_types');
+            $lead_sources = config('static.lead_sources');
+            $lead_status = config('static.lead_status');
+            $icons = config('static.products_icon');
+            $products = Product::all();
+            return view('leads.edit', compact('lead', 'companies', 'company_types', 'lead_sources', 'lead_status', 'icons', 'products'));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $lead = Lead::findOrFail($id);
+            $validator = Validator::make($request->all(), [
+                'date' => 'required|date',
+                'status' => 'required|string',
+                'remarks' => 'required|string',
+                'state' => 'required|string',
+                'city' => 'required|string',
+            ]);
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    $errors = $validator->errors()->all();
+                    $errorMessage = implode(', ', $errors);
+                    return response()->json(['success' => false, 'message' => $errorMessage], 422);
+                }
+                return back()->withErrors($validator)->withInput();
+            }
+            $validated = $validator->validated();
+            $lead->update($validator->validated());
+            // $lead->updated_by = Auth::id();
+            $lead->save();
+            return response()->json(['success' => true, 'message' => 'Lead updated successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function destroy(Request $request, $id)
     {
-        //
+        try {
+            $lead = Lead::findOrFail($id);
+            $lead->delete();
+            return response()->json(['success' => true, 'message' => 'Lead deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
 
