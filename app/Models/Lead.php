@@ -49,4 +49,16 @@ class Lead extends Model
     {
         return $this->hasMany(LeadActivity::class, 'lead_id')->orderBy('created_at', 'desc');
     }
+
+    // Product relation 
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'plan');
+    }
+
+    // ProductDetail relation
+    public function productdetail()
+    {
+        return $this->belongsTo(ProductDetail::class, 'package');
+    }
 }

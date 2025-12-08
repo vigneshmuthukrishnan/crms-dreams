@@ -8,6 +8,7 @@ use App\Http\Controllers\BulkSmsPackageController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,6 +68,9 @@ Route::middleware('auth')->group(function () {
     ROute::post('/product', [ProductController::class, 'index'])->name('product.index');
     Route::get('/packages-by-product/{productId}', [ProductController::class, 'getPackagesByProduct']);
 
+
+    // Report 
+    Route::get('/report/leads', [ReportController::class, 'leads'])->name('report.leads');
 });
 
 // Admin can do user management

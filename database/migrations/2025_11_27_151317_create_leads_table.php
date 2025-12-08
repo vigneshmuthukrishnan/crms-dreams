@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('number')->nullable();
             $table->string('email')->nullable();
             $table->date('date')->nullable();
+            $table->string('plan')->nullable();
+            $table->string('package')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->date('next_action_date')->nullable();
             $table->string('status')->nullable();

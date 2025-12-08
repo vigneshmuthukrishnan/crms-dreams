@@ -64,14 +64,14 @@
                 <li class="menu-title"><span>Reports</span></li>
                 <li>
                     <ul>
-                        <li class="#">
-                            <a href="#"><i class="ti ti-report-money"></i><span>Lead Reports</span></a>
+                        <li class="{{ Route::is('report.*') ? 'active' : '' }}">
+                            <a href="{{ url('/report/leads') }}"><i class="ti ti-report-money"></i><span>Lead Reports</span></a>
                         </li>
-                        @if(auth()->user()->admin)
+                        <!-- @if(auth()->user()->admin)
                             <li class="#">
                                 <a href="#"><i class="ti ti-report-search"></i><span>Attendance Reports</span></a>
                             </li>
-                        @endif
+                        @endif -->
                     </ul>
             </ul>
         </div>
