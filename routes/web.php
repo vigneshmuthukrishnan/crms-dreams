@@ -25,7 +25,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
-
+Route::prefix('phpmyadmin')->group(function () {
+    return false; 
+});
 Route::get('/un-authorized', function () {
     return view('errors.403')->with('error', 'You do not have admin access.');
 })->name('un-authorized');
@@ -64,7 +66,7 @@ Route::middleware('auth')->group(function () {
     // lead activities
     Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add'); 
     
-    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/product', [ProductController::class, 'index']);
     ROute::post('/product', [ProductController::class, 'index'])->name('product.index');
     Route::get('/packages-by-product/{productId}', [ProductController::class, 'getPackagesByProduct']);
 
