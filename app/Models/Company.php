@@ -32,7 +32,7 @@ class Company extends Model
     public function getLogoUrlAttribute()
     {
         // here storage path to url conversion logic
-        return $this->logo ? asset('storage/' . $this->logo) : null;
+        return $this->logo ? asset('storage/' . $this->logo) : asset('assets/img/company.jpg');
     }
 
     public function leads()
