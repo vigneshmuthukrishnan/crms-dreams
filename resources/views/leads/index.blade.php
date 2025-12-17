@@ -107,7 +107,6 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                    {data: 'name', name: 'name', orderable: false, searchable: true},
                     {data: 'company_name', name: 'company_name', orderable: false, searchable: true},
                     {data: 'user', name: 'user', orderable: false, searchable: true},
                     {data: 'number', name: 'number', orderable: false, searchable: true},
@@ -210,11 +209,6 @@
 
         $(".company_listss").select2({
             width: 'resolve'
-        });
-
-        $('#company_name_sel').on('change', function() {
-            var selectedOptionText = $(this).find('option:selected').text();
-            $('#company_name_txt').val(selectedOptionText);
         });
 
         $('input[name="product"]').on('change', function () {

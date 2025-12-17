@@ -22,10 +22,16 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
+                        <label class="form-label">Date <span class="text-danger ms-1">*</span></label>
+                        <input type="date" class="form-control" name="date" placeholder="Enter Date" required>
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <div class="mb-3">
                         <label class="form-label">Lead name <span class="text-danger ms-1">*</span></label>
                         <input type="text" class="form-control" name="name" placeholder="Enter Lead Name" required>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Customer name <span class="text-danger ms-1">*</span></label>
@@ -73,12 +79,6 @@
 
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label class="form-label">Date <span class="text-danger ms-1">*</span></label>
-                        <input type="date" class="form-control" name="date" placeholder="Enter Date" required>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
                         <label class="form-label">Lead Source <span class="text-danger ms-1">*</span></label>
                         <select class="form-control" data-toggle="select2" name="lead_source" required>
                             <option value="">Select</option>
@@ -110,7 +110,7 @@
                         </select>
                     </div>
                 </div>  
-                <div class="col-md-6">
+                <!--<div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">State</label>
                         <select class="form-control" name="state" id="state"></select>
@@ -127,7 +127,7 @@
                         <label class="form-label">Description<span class="text-danger ms-1">*</span></label>
                         <textarea class="form-control" rows="3" name="remarks"></textarea>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="d-flex align-items-center justify-content-end mt-3">
                 <button type="button" data-bs-dismiss="offcanvas" class="btn btn-light me-2">Cancel</button>
@@ -151,7 +151,31 @@
                 });
             }
         });
-
+        $('#company_name_sel').on('change', function() {
+            let compId = $(this).val();
+            if(compId != ''){
+                $.ajax({
+                    url: "{{ url('getIdLead') }}/" + compId,
+                    type: 'GET',
+                    success: function(response) {
+                        console.log(response.data);
+                        $('input[name="customer_name"]').val(response.data.name);
+                        $('input[name="email"]').val(response.data.email);
+                        $('input[name="number"]').val(response.data.phone_1);
+                    },
+                    error: function(xhr) {
+                        errorMsg(xhr.responseJSON.message || 'Failed to load edit form.');
+                        $('input[name="customer_name"]').val('');
+                        $('input[name="email"]').val('');
+                        $('input[name="number"]').val('');
+                    }
+                });
+            } else {
+                $('input[name="customer_name"]').val('');
+                $('input[name="email"]').val('');
+                $('input[name="number"]').val('');
+            }
+        });
     })
     $(document).on('change', '#state', function (e) {
         let state = $(this).val();

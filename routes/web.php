@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/companies/update/{id}', [CompanyController::class, 'update'])->name('companies.update');
     Route::delete('/companies/delete/{id}', [CompanyController::class, 'destroy'])->name('companies.destroy');
     Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
+    Route::get('/getIdLead/{id}', [CompanyController::class, 'getIdLead']);
 
     Route::post('/close-day', [AuthenticatedSessionController::class, 'closeDay'])->name('attendance.closeDay');
 

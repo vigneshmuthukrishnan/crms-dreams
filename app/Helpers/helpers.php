@@ -8,3 +8,10 @@ if (!function_exists('user_avatar')) {
         return "https://ui-avatars.com/api/?name={$name}&background={$bg}&color={$color}&size={$size}";
     }
 }
+
+function printArray($data)
+{
+    echo "<pre>";
+    print_r($data);
+    echo "<pre>";
+}

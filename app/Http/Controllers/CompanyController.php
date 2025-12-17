@@ -110,15 +110,10 @@ class CompanyController extends Controller
                 'website' => 'nullable|url|max:255',
                 'owner' => 'nullable|string|max:255',
                 'tags' => 'nullable|string|max:255',
-                'description' => 'nullable|string',
                 'country' => 'nullable|string|max:100',
                 'state' => 'nullable|string|max:100',
                 'city' => 'nullable|string|max:100',
                 'zipcode' => 'nullable|string|max:20',
-                'facebook_url' => 'nullable|url|max:255',
-                'linkedin_url' => 'nullable|url|max:255',
-                'instagram_url' => 'nullable|url|max:255', 
-                'whatsapp_url' => 'nullable|url|max:255',
                 'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
             if ($validator->fails()) {
@@ -161,14 +156,10 @@ class CompanyController extends Controller
                 'source' => 'nullable|string|max:255',
                 'industry' => 'nullable|string|max:255',
                 'tags' => 'nullable|string|max:255',
-                'description' => 'nullable|string',
                 'country' => 'nullable|string|max:100',
                 'state' => 'nullable|string|max:100',
                 'city' => 'nullable|string|max:100',
                 'zipcode' => 'nullable|string|max:20',
-                'facebook_url' => 'nullable|url|max:255',
-                'linkedin_url' => 'nullable|url|max:255',
-                'instagram_url' => 'nullable|url|max:255', 
             ]);
 
             if ($validator->fails()) {
@@ -208,6 +199,18 @@ class CompanyController extends Controller
             $industrys = config('static.industrys');
             $sources = config('static.lead_sources');
             return view('companies.edit', compact('company', 'industrys', 'sources'));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getIdLead($id)
+    {
+        try {
+            $company = Company::findOrFail($id);
+            $industrys = config('static.industrys');
+            $sources = config('static.lead_sources');
+            return response()->json(['success' => true, 'data' => $company ], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }

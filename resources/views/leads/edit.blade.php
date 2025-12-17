@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="mb-3">
                 <label class="form-label">Company Name<span class="text-danger">*</span></label>
-                <input type="hidden" class="form-control" name="company_name" value="" id="company_name_txt">
+                <input type="hidden" class="form-control" name="company_name" value="" id="company_name_txt" value="{{ $lead->company_name }}">
                 <select class="form-control select2 company_lists" name="company_id" id="company_name_sel" required readonly>
                     <option value="">Select Company</option>
                     @foreach($companies as $company)
@@ -14,10 +14,16 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="mb-3">
                 <label class="form-label">Lead name <span class="text-danger ms-1">*</span></label>
                 <input type="text" class="form-control" name="name" value="{{$lead->name}}" placeholder="Enter Lead Name"  required readonly>
+            </div>
+        </div> -->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Date <span class="text-danger ms-1">*</span></label>
+                <input type="date" class="form-control" name="date" placeholder="Enter Date" value="{{ date('Y-m-d', strtotime($lead->date)) }}" required>
             </div>
         </div>
         <div class="col-md-6">
@@ -67,12 +73,6 @@
 
         <div class="col-md-6">
             <div class="mb-3">
-                <label class="form-label">Date <span class="text-danger ms-1">*</span></label>
-                <input type="date" class="form-control" name="date" placeholder="Enter Date" value="{{ date('Y-m-d', strtotime($lead->date)) }}" required>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="mb-3">
                 <label class="form-label">Lead Source <span class="text-danger ms-1">*</span></label>
                 <select class="form-control" data-toggle="select2" name="lead_source" required>
                     <option value="">Select</option>
@@ -104,7 +104,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-6">
+        <!--<div class="col-md-6">
             <div class="mb-3">
                 <label class="form-label">State</label>
                 <select class="form-control" name="state" id="editstate"></select>
@@ -121,7 +121,7 @@
                 <label class="form-label">Description<span class="text-danger ms-1">*</span></label>
                 <textarea class="form-control" rows="3" name="remarks">{{ $lead->remarks }}</textarea>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="d-flex align-items-center justify-content-end mt-3">
         <button type="button" data-bs-dismiss="offcanvas" class="btn btn-light me-2">Cancel</button>
@@ -153,29 +153,29 @@
                     });
                 }
             });
-            $.ajax({
-                url: "https://countriesnow.space/api/v0.1/countries/states",
-                method: "POST",
-                data: JSON.stringify({ country: 'India'}),
-                contentType: "application/json",
-                success: function(response){
-                    $("#editstate").empty().append('<option value="">Select State</option>');
-                    let selectedState = "{{ $lead->state }}";
-                    $.each(response.data.states, function(index, state){
-                        if(selectedState == state.name){
-                            $("#editstate").append('<option value="'+state.name+'" selected>'+state.name+'</option>');
-                        } else {
-                            $("#editstate").append('<option value="'+state.name+'">'+state.name+'</option>');
-                        }
-                    });
-                    loadCitiesForEdit();
-                }
-            });
+            // $.ajax({
+            //     url: "https://countriesnow.space/api/v0.1/countries/states",
+            //     method: "POST",
+            //     data: JSON.stringify({ country: 'India'}),
+            //     contentType: "application/json",
+            //     success: function(response){
+            //         $("#editstate").empty().append('<option value="">Select State</option>');
+            //         let selectedState = "{{ $lead->state }}";
+            //         $.each(response.data.states, function(index, state){
+            //             if(selectedState == state.name){
+            //                 $("#editstate").append('<option value="'+state.name+'" selected>'+state.name+'</option>');
+            //             } else {
+            //                 $("#editstate").append('<option value="'+state.name+'">'+state.name+'</option>');
+            //             }
+            //         });
+            //         loadCitiesForEdit();
+            //     }
+            // });
         }, 500);
     }
-    $(document).on('change', '#editstate', function (e) {
-        loadCitiesForEdit();
-    });
+    // $(document).on('change', '#editstate', function (e) {
+    //     loadCitiesForEdit();
+    // });
     function loadCitiesForEdit(){
         let state = $('#editstate').val();
         $.ajax({

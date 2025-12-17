@@ -18,8 +18,9 @@ class LeadController extends Controller
         $limit = 10;
         $page = $request->get('page', 1);
         $offset = ($page - 1) * $limit;   
+        $user = auth()->user();
 
-        $query = Lead::query();
+        $query = $user->admin ? Lead::query() : Lead::where('assignee', $user->id);
 
         if ($request->name) {
             $query->where(function($q) use ($request) {
@@ -110,7 +111,6 @@ class LeadController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string',
                 'customer_name' => 'required|string',
                 'company_type' => 'required|string',
                 'lead_source' => 'required|string',
@@ -120,9 +120,6 @@ class LeadController extends Controller
                 'product' => 'required|string',
                 'package' => 'required|string',
                 'status' => 'required|string',
-                'remarks' => 'required|string',
-                'state' => 'required|string',
-                'city' => 'required|string',
             ]);
             if ($validator->fails()) {
                 if ($request->expectsJson()) {
@@ -186,9 +183,6 @@ class LeadController extends Controller
             $validator = Validator::make($request->all(), [
                 'date' => 'required|date',
                 'status' => 'required|string',
-                'remarks' => 'required|string',
-                'state' => 'required|string',
-                'city' => 'required|string',
             ]);
             if ($validator->fails()) {
                 if ($request->expectsJson()) {

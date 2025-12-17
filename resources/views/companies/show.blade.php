@@ -107,7 +107,7 @@
                             @endif
                         </div>
 
-                        <h6 class="mb-3 fw-semibold">Social Profile</h6>
+                        <!-- <h6 class="mb-3 fw-semibold">Social Profile</h6>
                         <ul class="d-flex align-items-center">
                             <li>
                                 <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle fs-14 text-dark"><i class="ti ti-brand-youtube"></i></a>
@@ -134,7 +134,7 @@
                             <a href="javascript:void(0);" class="d-block mb-2"><span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2"><i class="ti ti-share-2"></i></span>Share Contact</a>
                             <a href="javascript:void(0);" class="d-block mb-2"><span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2"><i class="ti ti-star"></i></span>Add to Favourite</a>
                             <a href="javascript:void(0);" class="d-block mb-0" data-bs-toggle="modal" data-bs-target="#delete_contact"><span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2"><i class="ti ti-trash-x"></i></span>Delete Contact</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

@@ -54,8 +54,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Fax</label>
-                                <input type="text" class="form-control" value="{{ $company->fax }}" name="fax" placeholder="Enter Fax">
+                                <label class="form-label">GST</label>
+                                <input type="text" class="form-control" value="{{ $company->fax }}" name="fax" placeholder="Enter GST">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -98,12 +98,12 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <div class="mb-0">
                                 <label class="form-label">Description <span class="text-danger">*</span></label>
                                 <textarea class="form-control" rows="3" name="description">{{ $company->description }}</textarea>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <div class="accordion-item border-top rounded mb-3">
+        <!-- <div class="accordion-item border-top rounded mb-3">
             <div class="accordion-header">
                 <a href="#" class="accordion-button accordion-custom-button rounded" data-bs-toggle="collapse" data-bs-target="#social">
                     <span class="avatar avatar-md rounded me-1"><i class="ti ti-social"></i></span>
@@ -196,7 +196,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="d-flex align-items-center justify-content-end">
         <button type="button" data-bs-dismiss="offcanvas" class="btn btn-light me-2">Cancel</button>

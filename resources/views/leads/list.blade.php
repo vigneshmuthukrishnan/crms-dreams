@@ -5,7 +5,6 @@
                 <thead class="table-light">
                     <tr>
                         <th class="no-sort">S.no</th>
-                        <th>Lead Name</th>
                         <th>Company Name</th>
                         <th>User</th>
                         <th>Phone</th>
