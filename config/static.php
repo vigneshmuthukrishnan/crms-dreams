@@ -5,7 +5,7 @@ return [
     'user_company' => ['mydreamstechnology', 'tendigit'],
     'company_types' => ['User', 'Reseller'],
     'lead_status'   => ['Fresh Lead', 'RNR', 'Invalid Number', 'Junk', 'Followup', 'Closed', 'Not Interested', 'Future Requirement'],
-    'lead_sources'  => ['Phone Calls', 'Social Media', 'Referral Sites', 'Web Analytics', 'Previous Purchases', 'Other'],
+    'lead_sources'  => ['Lead Generaton', 'Reference', 'Google', 'Organic', 'IVR', 'Social Media'],
     'districts'     => [
         'Ariyalur', 'Chengalpattu','Chennai','Coimbatore','Cuddalore','Dharmapuri','Dindigul','Erode',
         'Kallakurichi','Kanniyakumari','Karur','Krishnagiri','Madurai','Nagapattinam','Namakkal',
