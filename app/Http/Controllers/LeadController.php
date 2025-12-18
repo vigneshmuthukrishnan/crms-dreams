@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\LeadActivity;
 use App\Models\Product;
 use App\Models\ProductDetail;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 
@@ -103,8 +104,9 @@ class LeadController extends Controller
         $lead_sources = config('static.lead_sources');
         $lead_status = config('static.lead_status');
         $icons = config('static.products_icon');
+        $users = User::where('admin', '0')->get();
         $products = Product::all();
-        return view('leads.index', compact('leads','leadcount', 'companies', 'company_types', 'lead_sources', 'lead_status', 'products', 'icons'));
+        return view('leads.index', compact('leads','leadcount', 'companies', 'company_types', 'lead_sources', 'lead_status', 'products', 'icons','users'));
     }
 
     public function store(Request $request)
@@ -135,7 +137,11 @@ class LeadController extends Controller
             $lead->company_name = $request->company_name;
             $lead->company_id = $request->company_id;
             $lead->plan = $request->product;
-            $lead->assignee = auth()->user()->id;
+            if(auth()->user()->admin && $request->user_id){
+                $lead->assignee = $request->user_id;
+            } else {
+                $lead->assignee = auth()->user()->id;
+            }
             $lead->save();
             return response()->json(['success' => true, 'message' => 'Lead created successfully!', 'lead' => $lead], 201);
         } catch (\Exception $e) {
@@ -218,10 +224,7 @@ class LeadController extends Controller
     public function addActivity(Request $request, $leadId)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
             'activity_type' => 'required|string',
-            'date' => 'required|date',
-            'time' => 'required',
             'remarks' => 'required|string',
             'next_action_date' => 'required|date',
             'status' => 'required|string',
@@ -240,10 +243,7 @@ class LeadController extends Controller
 
         $activity = LeadActivity::create([
             'lead_id' => $lead->id,
-            'name' => $validated['name'],
             'type' => $validated['activity_type'],
-            'date' => $validated['date'],
-            'time' => $validated['time'],
             'remark' => $validated['remarks'],
             'next_action_date' => $validated['next_action_date'],
             'status' => $validated['status'],

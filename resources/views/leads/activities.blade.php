@@ -12,12 +12,12 @@
                 @csrf
                 <div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <div class="mb-3">
                                 <label class="form-label">Title <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-12">
                             <div class="mb-2">
                                 <label class="form-label">Activity Type<span
@@ -56,7 +56,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Date <span class="text-danger">*</span></label>
                                 <div class="input-group w-auto input-group-flat">
@@ -71,7 +71,7 @@
                                     <input type="time" name="time" class="form-control form-control" name="time" data-provider="timepickr" data-time-basic="true" placeholder="-- : -- : --">
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Status <span class="text-danger">*</span></label>

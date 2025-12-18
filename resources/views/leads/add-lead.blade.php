@@ -128,6 +128,19 @@
                         <textarea class="form-control" rows="3" name="remarks"></textarea>
                     </div>
                 </div> -->
+                @if(auth()->user()->admin)
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Users <span class="text-danger ms-1">*</span></label>
+                        <select class="form-control" data-toggle="select2" name="user_id" required>
+                            <option value="">Select</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}" >{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @endif 
             </div>
             <div class="d-flex align-items-center justify-content-end mt-3">
                 <button type="button" data-bs-dismiss="offcanvas" class="btn btn-light me-2">Cancel</button>

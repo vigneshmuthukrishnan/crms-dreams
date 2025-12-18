@@ -60,7 +60,7 @@
     </div>
 </x-app-layout>
 
-@include('leads.add-lead', compact('companies', 'company_types', 'lead_sources', 'lead_status', 'products', 'icons'))
+@include('leads.add-lead', compact('companies', 'company_types', 'lead_sources', 'lead_status', 'products', 'icons', 'users'))
 
 <div class="offcanvas offcanvas-end offcanvas-large" tabindex="-1" id="offcanvas_edit">
     <div class="offcanvas-header border-bottom">
