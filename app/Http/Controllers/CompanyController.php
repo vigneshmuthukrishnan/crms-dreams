@@ -17,8 +17,9 @@ class CompanyController extends Controller
         $limit = 10;
         $page = $request->get('page', 1);
         $offset = ($page - 1) * $limit;
-        
-        $query = Company::query();
+        $user = auth()->user();
+
+        $query = $user->admin ? Company::query() : Company::where('created_by', $user->id);
 
         if ($request->name) {
             $query->where(function($q) use ($request) {
