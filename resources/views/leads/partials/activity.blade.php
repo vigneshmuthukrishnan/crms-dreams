@@ -3,7 +3,7 @@
         {{ date("d/m/Y", strtotime($activity->created_at)) ?? N/A }}
     </div>
     @if($activity->type == 'message')
-        <div class="card border shadow-none mb-3">
+        <!-- <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-wrap row-gap-2">
                     <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-info">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-lg-nowrap flex-wrap row-gap-2">
@@ -31,7 +31,7 @@
             </div>
         </div>
     @elseif($activity->type == 'call')
-        <div class="card border shadow-none mb-3">
+        <!-- <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-wrap row-gap-2">
                     <span
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-lg-nowrap flex-wrap row-gap-2">
@@ -60,7 +60,7 @@
             </div>
         </div>
     @elseif($activity->type == 'meeting')
-        <div class="card border shadow-none mb-3">
+        <!-- <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-wrap row-gap-2">
                     <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-warning">
@@ -72,7 +72,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-lg-nowrap flex-wrap row-gap-2">
@@ -88,7 +88,7 @@
             </div>
         </div>
     @elseif($activity->type == 'mail')
-        <div class="card border shadow-none mb-3">
+        <!-- <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-wrap row-gap-2">
                     <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-primary">
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-lg-nowrap flex-wrap row-gap-2">
@@ -116,7 +116,7 @@
             </div>
         </div>
     @elseif($activity->type == 'task')
-        <div class="card border shadow-none mb-3">
+        <!-- <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-wrap row-gap-2">
                     <span class="avatar avatar-md flex-shrink-0 rounded me-2 bg-secondary">
@@ -128,7 +128,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="card border shadow-none mb-3">
             <div class="card-body p-3">
                 <div class="d-flex flex-lg-nowrap flex-wrap row-gap-2">

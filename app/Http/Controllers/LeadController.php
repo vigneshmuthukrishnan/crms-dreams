@@ -99,7 +99,11 @@ class LeadController extends Controller
 
         $leads = Lead::latest()->take($limit)->get();
         $leadcount = Lead::count();
-        $companies = Company::all();
+        if(auth()->user()->admin){
+            $companies = Company::all();
+        } else {
+            $companies = Company::where('created_by', auth()->user()->id)->get();
+        }
         $company_types = config('static.company_types');
         $lead_sources = config('static.lead_sources');
         $lead_status = config('static.lead_status');
