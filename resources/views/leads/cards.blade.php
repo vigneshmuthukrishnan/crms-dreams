@@ -53,6 +53,13 @@
                         <p class="text-default d-inline-flex align-items-center">
                             <i class="ti ti-map-pin-pin text-dark me-1"></i>{{ $lead->state ?? 'N/A' }}, {{ $lead->city ?? 'N/A' }}
                         </p>
+                        <p class="text-default d-inline-flex align-items-center">
+                            @if($lead->activitiestatus->first())
+                                {{ $lead->activitiestatus->first() ? 'Last Activity: ' . $lead->activitiestatus->first()->status . ' on ' . $lead->activitiestatus->first()->created_at->format('M d, Y') : 'No Activities Yet' }}
+                            @else
+                                {{ 'Last Activity: ' . $lead->status . ' on ' . $lead->created_at->format('M d, Y') }}
+                            @endif
+                        </p>
                     </div>
                 </div>
 

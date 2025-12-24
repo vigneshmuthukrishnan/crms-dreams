@@ -63,7 +63,12 @@ class LeadController extends Controller
                         </h6>';
                     })
                     ->addColumn('status', function($row) {
-                        return '<span class="badge badge-pill bg-success">'.$row->status.'</span>';
+                        if($row->activitiestatus->first()){
+                            $str = '<span class="badge badge-pill bg-success">'. $row->activitiestatus->first()->status.'</span>';
+                        } else {
+                            $str = '<span class="badge badge-pill bg-success">'.$row->status.'</span>';
+                        }
+                        return $str;
                     })
                     ->addColumn('action', function($row) {
                         $previewUrl = route('leads.show', $row->id);

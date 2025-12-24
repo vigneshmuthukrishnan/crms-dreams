@@ -50,6 +50,12 @@ class Lead extends Model
         return $this->hasMany(LeadActivity::class, 'lead_id')->orderBy('created_at', 'desc');
     }
 
+    // lead activities relation latest one
+    public function activitiestatus()
+    {
+        return $this->hasMany(LeadActivity::class, 'lead_id')->latest();
+    }
+
     // Product relation 
     public function product()
     {
