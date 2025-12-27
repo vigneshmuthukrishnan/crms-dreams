@@ -12,7 +12,7 @@ class Company extends Model
     
     protected $fillable = [
         'name', 'email', 'phone_1', 'phone_2', 'logo', 'fax', 'website',
-        'owner', 'source', 'industry', 'tags', 'description', 'address',
+        'owner', 'source', 'industry', 'type', 'tags', 'description', 'address',
         'country', 'state', 'city', 'zipcode', 'facebook_url',
         'linkedin_url', 'instagram_url', 'whatsapp_url',
         'created_by', 'updated_by',

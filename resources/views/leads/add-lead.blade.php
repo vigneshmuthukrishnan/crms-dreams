@@ -69,13 +69,13 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Packages <span class="text-danger ms-1">*</span></label>
                         <select class="form-control" data-toggle="select2" name="package" id="product_to_packages" required>
                         </select>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -88,7 +88,7 @@
                         </select>
                     </div>
                 </div>                 
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Type <span class="text-danger ms-1">*</span></label>
                         <select class="form-control" data-toggle="select2" name="company_type" required>
@@ -98,7 +98,7 @@
                             @endforeach
                         </select>
                     </div>
-                </div>  
+                </div>   -->
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Status <span class="text-danger ms-1">*</span></label>
@@ -173,8 +173,11 @@
                     success: function(response) {
                         console.log(response.data);
                         $('input[name="customer_name"]').val(response.data.name);
+                        $('input[name="customer_name"]').attr('readonly', true);
                         $('input[name="email"]').val(response.data.email);
+                        $('input[name="email"]').attr('readonly', true);
                         $('input[name="number"]').val(response.data.phone_1);
+                        $('input[name="number"]').attr('readonly', true);
                     },
                     error: function(xhr) {
                         errorMsg(xhr.responseJSON.message || 'Failed to load edit form.');

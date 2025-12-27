@@ -108,7 +108,7 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'company_name', name: 'company_name', orderable: false, searchable: true},
-                    {data: 'user', name: 'user', orderable: false, searchable: true},
+                    {data: 'email', name: 'email', orderable: false, searchable: true},
                     {data: 'number', name: 'number', orderable: false, searchable: true},
                     {data: 'status', name: 'status', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -202,7 +202,7 @@
                     location.reload();
                 },
                 error: function (xhr) {
-                    errorMsg('An error occurred while creating the company.');
+                    errorMsg(xhr.responseJSON.message || 'An error occurred while creating the lead.');
                 }
             });
         });
@@ -211,21 +211,21 @@
             width: 'resolve'
         });
 
-        $('input[name="product"]').on('change', function () {
-            let productId = $(this).val();
-            $.ajax({
-                url: "{{ url('/packages-by-product') }}/" + productId,
-                method: "GET",
-                success: function (response) {
-                    $("#product_to_packages").html('<option value="">Select Package</option>');
-                    $.each(response, function (key, package) {
-                        $("#product_to_packages").append(
-                            '<option value="' + package.id + '">' + package.quantity + '</option>'
-                        );
-                    });
-                }
-            });
-        });
+        // $('input[name="product"]').on('change', function () {
+        //     let productId = $(this).val();
+        //     $.ajax({
+        //         url: "{{ url('/packages-by-product') }}/" + productId,
+        //         method: "GET",
+        //         success: function (response) {
+        //             $("#product_to_packages").html('<option value="">Select Package</option>');
+        //             $.each(response, function (key, package) {
+        //                 $("#product_to_packages").append(
+        //                     '<option value="' + package.id + '">' + package.quantity + '</option>'
+        //                 );
+        //             });
+        //         }
+        //     });
+        // });
     });
 
     $(document).on('click', '.edit-lead', function() {

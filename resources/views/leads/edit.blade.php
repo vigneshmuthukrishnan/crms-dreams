@@ -63,13 +63,13 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="mb-3">
                 <label class="form-label">Packages <span class="text-danger ms-1">*</span></label>
                 <select class="form-control" data-toggle="select2" name="package" id="edit_product_to_packages" required>
                 </select>
             </div>
-        </div>
+        </div> -->
 
         <div class="col-md-6">
             <div class="mb-3">
@@ -82,7 +82,7 @@
                 </select>
             </div>
         </div>                 
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="mb-3">
                 <label class="form-label">Type <span class="text-danger ms-1">*</span></label>
                 <select class="form-control" data-toggle="select2" name="company_type" required>
@@ -92,7 +92,7 @@
                     @endforeach
                 </select>
             </div>
-        </div>
+        </div> -->
         <div class="col-md-6">
             <div class="mb-3">
                 <label class="form-label">Status <span class="text-danger ms-1">*</span></label>

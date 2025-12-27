@@ -72,16 +72,27 @@
                                 </div>  
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Owner</label>
+                                        <label class="form-label">Customer Name</label>
                                         <input type="text" class="form-control" name="owner" placeholder="Enter Owner Name">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tags </label>
                                         <input class="input-tags form-control" name="tags" data-choices data-choices-limit="infinite" data-choices-removeitem type="text" placeholder="Enter value separated by comma" />
                                     </div>
-                                </div>
+                                </div> -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Type <span class="text-danger ms-1">*</span></label>
+                                        <select class="form-control" data-toggle="select2" name="type" required>
+                                            <option value="" >Select</option>
+                                            @foreach($company_types as $type)
+                                                <option value="{{ $type }}" >{{ $type }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>  
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Source <span class="text-danger">*</span></label>

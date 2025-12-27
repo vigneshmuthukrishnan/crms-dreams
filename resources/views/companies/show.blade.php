@@ -85,56 +85,10 @@
                             <li class="row">
                                 <span class="col-6">Industry</span><span class="col-6 text-dark">{{ $company->industry }}</span>
                             </li>
-                        </ul>
-                        <h6 class="mb-3 fw-semibold">Tags</h6>
-                        <div class="border-bottom mb-3 pb-3">
-                            @php
-                                $tags = explode(',', $company->tags);
-                                $badgeColors = ['success', 'info', 'warning', 'danger', 'secondary'];
-                            @endphp
-
-                            @if(!empty($tags))
-                                @foreach($tags as $tag)
-                                    @php
-                                        $randomColor = $badgeColors[array_rand($badgeColors)];
-                                    @endphp
-                                    <a href="javascript:void(0);" class="badge badge-soft-{{$randomColor}} fw-medium me-2">
-                                        {{ trim($tag) }}
-                                    </a>
-                                @endforeach
-                            @else
-                                <span class="badge badge-tag badge-soft-secondary">No Tags</span>
-                            @endif
-                        </div>
-
-                        <!-- <h6 class="mb-3 fw-semibold">Social Profile</h6>
-                        <ul class="d-flex align-items-center">
-                            <li>
-                                <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle fs-14 text-dark"><i class="ti ti-brand-youtube"></i></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle fs-14 text-dark"><i class="ti ti-brand-facebook"></i></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle fs-14 text-dark"><i class="ti ti-brand-instagram"></i></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle fs-14 text-dark"><i class="ti ti-brand-whatsapp"></i></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle fs-14 text-dark"><i class="ti ti-brand-pinterest"></i></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle fs-14 text-dark"><i class="ti ti-brand-linkedin"></i></a>
+                            <li class="row">
+                                <span class="col-6">Type</span><span class="col-6 text-dark">{{ $company->type ?? 'N/A' }}</span>
                             </li>
                         </ul>
-                        <hr>
-                        <h6 class="mb-3 fw-semibold">Settings</h6>
-                        <div class="mb-0">
-                            <a href="javascript:void(0);" class="d-block mb-2"><span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2"><i class="ti ti-share-2"></i></span>Share Contact</a>
-                            <a href="javascript:void(0);" class="d-block mb-2"><span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2"><i class="ti ti-star"></i></span>Add to Favourite</a>
-                            <a href="javascript:void(0);" class="d-block mb-0" data-bs-toggle="modal" data-bs-target="#delete_contact"><span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2"><i class="ti ti-trash-x"></i></span>Delete Contact</a>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -175,7 +129,6 @@
                                                     <h6 class="fw-medium fs-14 mb-1">{{ $lead->name }}</h6>
                                                     <p class="mb-0">{{ $lead->created_at->format('d M Y, h:i A') }}</p>
                                                     <p class="mb-0"><strong>Status:</strong> {{ $lead->status }}
-                                                    <p class="mb-0"><strong>Plan:</strong> {{ $lead->assigned_to }}
                                                 </div>
                                             </div>
                                         </div>

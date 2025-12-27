@@ -52,21 +52,22 @@ class LeadController extends Controller
                         ';
                     })
                     ->addColumn('company_name', function($row) {
+                        $previewUrl = route('leads.show', $row->id);
                         return '
                             <h6 class="d-flex align-items-center fs-14 fw-medium mb-0">
-                            <a href="#" class="avatar border rounded p-1 me-2 rounded-circle">
+                            <a href="'.$previewUrl.'" class="avatar border rounded p-1 me-2 rounded-circle">
                                 <img class="w-auto h-auto" src="'.$row->company->LogoUrl.'" alt="User Image" style="width:30px !important; height:30px !important;">
                             </a>
-                            <a href="#" class="d-flex flex-column">
+                            <a href="'.$previewUrl.'" class="d-flex flex-column">
                                 '.$row->company->name.'<span class="text-body fs-13 mt-1 fw-normal">'.$row->company->state.', '.$row->company->country.' </span>
                             </a>
                         </h6>';
                     })
                     ->addColumn('status', function($row) {
                         if($row->activitiestatus->first()){
-                            $str = '<span class="badge badge-pill bg-success">'. $row->activitiestatus->first()->status.'</span>';
+                            $str = setColorStatus($row->activitiestatus->first()->status);
                         } else {
-                            $str = '<span class="badge badge-pill bg-success">'.$row->status.'</span>';
+                            $str = setColorStatus($row->status);
                         }
                         return $str;
                     })
@@ -78,14 +79,14 @@ class LeadController extends Controller
                                     <i class="ti ti-dots-vertical"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="'.$previewUrl.'">
+                                        <i class="ti ti-eye text-blue-light"></i> Preview
+                                    </a>
                                     <a class="dropdown-item edit-lead" href="javascript:void(0);" data-id="'.$row->id.'" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
                                         <i class="ti ti-edit text-blue"></i> Edit
                                     </a>
                                     <a class="dropdown-item delete-lead" href="#" data-id="'.$row->id.'" data-bs-toggle="modal" data-bs-target="#delete_contact">
                                         <i class="ti ti-trash"></i> Delete
-                                    </a>
-                                    <a class="dropdown-item" href="'.$previewUrl.'">
-                                        <i class="ti ti-eye text-blue-light"></i> Preview
                                     </a>
                                 </div>
                             </div>
@@ -123,13 +124,11 @@ class LeadController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'customer_name' => 'required|string',
-                'company_type' => 'required|string',
                 'lead_source' => 'required|string',
                 'number' => 'required|string',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:leads,email',
                 'date' => 'required|date',
                 'product' => 'required|string',
-                'package' => 'required|string',
                 'status' => 'required|string',
             ]);
             if ($validator->fails()) {
@@ -165,9 +164,10 @@ class LeadController extends Controller
             if($lead){
                 $leadCount = Lead::count();
                 $products = Product::where('id', $lead->plan)->first();
-                $packages = ProductDetail::where('id', $lead->package)->first();
+                $packages = $lead->package ? ProductDetail::where('id', $lead->package)->first() : null;
                 $lead_status = config('static.lead_status');
-                return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages'));
+                $allproducts = Product::all();
+                return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages', 'allproducts'));
             }
             return redirect()->route('leads.index')->with('error', 'Lead not found.');
         }  catch (\Exception $e) {
@@ -259,7 +259,11 @@ class LeadController extends Controller
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
         ]);
-
+        if($request->status == 'Followup'){
+            $lead->product = $request->product;
+            $lead->package = $request->package;
+            $lead->save();
+        }
         return response()->json(['success' => true, 'message' => 'Activity added successfully!', 'activity' => $activity], 201);
     }
 }

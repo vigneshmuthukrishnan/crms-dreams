@@ -77,7 +77,11 @@
                                 <span class="avatar avatar-xs bg-light p-0 flex-shrink-0 rounded-circle text-dark me-2">
                                     <i class="ti ti-message fs-14"></i>
                                 </span>
-                                <p class="mb-0">{{ $packages->quantity }}</p>
+                                @if($packages)
+                                    <p class="mb-0">{{ $packages->quantity ?? 'N/A' }}</p>
+                                @else
+                                    <p class="mb-0">N/A</p>
+                                @endif
                             </div>
                             <div class="d-flex align-items-center">
                                 <span
@@ -85,7 +89,12 @@
                                     <i class="ti ti-currency-dollar fs-14"></i>
                                 </span>
                                 <p class="mb-0">
-                                    {{ number_format($packages->total, 2) }}
+                                    @if($packages)
+                                        Price: {{ number_format($packages->total, 2) ?? 'N/A' }}
+                                    @else
+                                        N/A
+                                    @endif
+                                    
                                 </p>
                             </div>
                         </div>
@@ -173,7 +182,7 @@
     </div>
 </x-app-layout>
 
-@include('leads.activities')
+@include('leads.activities', compact('allproducts'))
 
 <script>
     $(document).ready(function () {
@@ -190,16 +199,35 @@
                     successMsg('Lead Activity created successfully!');
                     location.reload();
                 },
-                error: function(xhr) {
-                    console.log(xhr);                    
-                    if (xhr.status === 422) {
-                        let msg = Object.values(xhr.responseJSON.errors).join('<br>');
-                        errorMsg(msg);
-                    } else {
-                        errorMsg('An error occurred while creating the Lead Activity.');
-                    }
+                error: function(xhr) {                   
+                     errorMsg(xhr.responseJSON.message || 'An error occurred while creating the Lead Activity.');
                 }
             });
+        });
+
+        $('input[name="product"]').on('change', function () {
+            let productId = $(this).val();
+            $.ajax({
+                url: "{{ url('/packages-by-product') }}/" + productId,
+                method: "GET",
+                success: function (response) {
+                    $("#product_to_packages").html('<option value="">Select Package</option>');
+                    $.each(response, function (key, package) {
+                        $("#product_to_packages").append(
+                            '<option value="' + package.id + '">' + package.quantity + '</option>'
+                        );
+                    });
+                }
+            });
+        });
+
+        $('#activity_status').on('change', function() {
+            var selectedStatus = $(this).val();
+            if(selectedStatus === 'Followup') {
+                $('.product_lists').show();
+            } else {
+                $('.product_lists').hide();
+            }
         });
     });
 </script>

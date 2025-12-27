@@ -8,8 +8,7 @@
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Email</th>
-                        <th>Address</th>
-                        <th class="text-end no-sort">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>

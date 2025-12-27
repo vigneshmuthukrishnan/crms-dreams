@@ -16,12 +16,9 @@
                         <div>
                             <h6 class="fs-14">
                                 <a href="{{ url('/leads/'.$lead->id) }}" class="fw-medium">
-                                    {{ Str::limit($lead->name, 15) }}
+                                    {{ Str::limit($lead->company->name, 15) }}
                                 </a>
                             </h6>
-                            <div class="set-star text-default"> 
-                                {{ Str::limit($lead->company->name, 15) }}
-                            </div>
                         </div>
                     </div>
                     <div class="dropdown table-action">
@@ -29,14 +26,14 @@
                             <i class="ti ti-dots-vertical"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{{ url('/leads/'.$lead->id) }}">
+                                <i class="ti ti-eye text-blue-light"></i> Preview
+                            </a>
                             <a class="dropdown-item edit-lead" data-id="{{ $lead->id }}" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
                                 <i class="ti ti-edit text-blue"></i> Edit
                             </a>
                             <a class="dropdown-item delete-lead" href="#" data-bs-toggle="modal" data-id="{{ $lead->id }}" data-bs-target="#delete_contact">
                                 <i class="ti ti-trash"></i> Delete
-                            </a>
-                            <a class="dropdown-item" href="{{ url('/leads/'.$lead->id) }}">
-                                <i class="ti ti-eye text-blue-light"></i> Preview
                             </a>
                         </div>
                     </div>
@@ -51,7 +48,12 @@
                             <i class="ti ti-phone text-dark me-1"></i>{{ $lead->number ?? 'N/A' }}
                         </p>
                         <p class="text-default d-inline-flex align-items-center">
-                            <i class="ti ti-map-pin-pin text-dark me-1"></i>{{ $lead->state ?? 'N/A' }}, {{ $lead->city ?? 'N/A' }}
+                            <i class="ti ti-message me-1"></i>
+                            @if($lead->activitiestatus->first())
+                                {{ str::limit($lead->activitiestatus->first()->remark ?? 'N/A', 25) }}
+                            @else
+                                N/A
+                            @endif
                         </p>
                         <p class="text-default d-inline-flex align-items-center">
                             @if($lead->activitiestatus->first())

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use App\Models\Lead;
+use App\Models\Company;
 
 class MetaWebhookController extends Controller
 {
@@ -64,11 +65,21 @@ class MetaWebhookController extends Controller
             $data[$field['name']] = $field['values'][0] ?? null;
         }
 
-        Lead::create([
+        $leadModel = Lead::create([
             'name'   => $data['full_name'] ?? null,
             'email'  => $data['email'] ?? null,
             'phone'  => $data['phone_number'] ?? null,
-            'source' => 'meta_ads'
+            'source' => 'meta_ads',
+            'company_id' => null,
+        ]);
+
+        $company = Company::firstOrCreate([
+            'name'  => $data['company_name'] ?? $data['full_name'],
+            'email' => $data['email'] ?? null,
+            'phone_1' => $data['phone_number'] ?? null,
+        ]);
+        $leadModel->update([
+            'company_id' => $company->id
         ]);
     }
 

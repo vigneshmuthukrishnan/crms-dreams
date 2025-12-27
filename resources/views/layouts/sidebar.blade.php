@@ -43,9 +43,11 @@
                         <li class="{{ Route::is('leads.*') ? 'active' : '' }}">
                             <a href="{{ url('/leads') }}"><i class="ti ti-chart-arcs"></i><span>Leads</span></a>
                         </li>
+                        @if(auth()->user()->admin)
                         <li class="{{ Route::is('product.*') ? 'active' : '' }}">
                             <a href="{{ url('/product') }}"><i class="ti ti-atom-2"></i><span>Product</span></a>
                         </li>
+                        @endif
                     </ul>
                 </li>
                 @if(auth()->user()->admin)

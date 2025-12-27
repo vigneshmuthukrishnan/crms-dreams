@@ -16,29 +16,31 @@
         <div class="card border-0 rounded-0">
             <div class="card-body">
 
-                <div class="row">
-                    <div class="col-md-2 mb-3">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Search by Name, Email or Phone">
+                <form method="GET" action="{{ route('report.leads') }}">
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Search by Name, Email or Phone" value="{{ request('name') }}">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <select class="form-select" id="status" name="status">
+                                <option value="">Select Status</option>
+                                @foreach($lead_status as $status)
+                                    <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>{{ $status }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <input type="date" class="form-control" id="fromdate" name="fromdate" placeholder="From Date"  value="{{ request('fromdate') }}">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <input type="date" class="form-control" id="todate" name="todate" placeholder="To Date" value="{{ request('todate') }}">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>                         
+                            <a href="{{ route('report.leads') }}" class="btn btn-info">Reset</a>                      
+                        </div>
                     </div>
-                    <div class="col-md-2 mb-3">
-                        <select class="form-select" id="status" name="status">
-                            <option value="">Select Status</option>
-                            @foreach($lead_status as $status)
-                                <option value="{{ $status }}" >{{ $status }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <input type="date" class="form-control" id="fromdate" name="fromdate" placeholder="From Date">
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <input type="date" class="form-control" id="todate" name="todate" placeholder="To Date">
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <button type="button" class="btn btn-primary" id="searchBtn">Search</button>                         
-                        <button type="button" class="btn btn-info" id="resetBtn">Reset</button>                         
-                    </div>
-                </div>
+                </form>
 
                 <div class="table-responsive custom-table" style="overflow-x: hidden !important;">
                     <table class="table table-nowrap" id="manage-users-list">
@@ -76,7 +78,7 @@
                         </tbody>
                     </table>
                     <div class="mt-3">
-                        {{ $leads->withQueryString()->links() }}
+                        {{ $leads->links() }}
                     </div>
                 </div>
             </div>

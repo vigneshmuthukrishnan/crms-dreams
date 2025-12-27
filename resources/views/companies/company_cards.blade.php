@@ -49,22 +49,6 @@
                             <i class="ti ti-map-pin-pin text-dark me-1"></i>{{ $company->address ?? 'N/A' }}
                         </p>
                     </div>
-                    <div class="d-flex align-items-center">
-                        @php
-                            $tags = explode(',', $company->tags);
-                            $badgeColors = ['success', 'info', 'warning', 'danger', 'secondary'];
-                        @endphp
-                        @if(!empty($tags))
-                            @foreach($tags as $tag)
-                                @php
-                                    $randomColor = $badgeColors[array_rand($badgeColors)];
-                                @endphp
-                                <span class="badge badge-tag badge-soft-{{$randomColor}} me-2">{{ trim(Str::limit($tag, 9)) }}</span>
-                            @endforeach
-                        @else
-                            <span class="badge badge-tag badge-soft-secondary">No Tags</span>
-                        @endif
-                    </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center flex-wrap row-gap-2 border-top pt-3 mt-3">

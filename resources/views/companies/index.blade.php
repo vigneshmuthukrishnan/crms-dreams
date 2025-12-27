@@ -60,7 +60,7 @@
     </div>
 </x-app-layout>
 
-@include('companies.add-company', compact('industrys', 'sources'))
+@include('companies.add-company', compact('industrys', 'sources', 'company_types'))
 
 <div class="offcanvas offcanvas-end offcanvas-large" tabindex="-1" id="offcanvas_edit">
     <div class="offcanvas-header border-bottom">
@@ -112,7 +112,6 @@
                     {data: 'name', name: 'name', orderable: false, searchable: true},
                     {data: 'phone', name: 'phone', orderable: false, searchable: true},
                     {data: 'email', name: 'email', orderable: false, searchable: true},
-                    {data: 'address', name: 'address', orderable: false, searchable: true},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
             });

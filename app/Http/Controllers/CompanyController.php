@@ -41,7 +41,8 @@ class CompanyController extends Controller
                 return DataTables::of($query)
                     ->addIndexColumn()
                     ->addColumn('name', function($row) {
-                        return $row->name ?? '—';
+                        $previewUrl = route('companies.show', $row->id);
+                        return '<a href="'.$previewUrl.'" class="d-flex flex-column">'.$row->name.'</a>';
                     })
                     ->addColumn('phone', function($row) {
                         return $row->phone_1 ?? '—';
@@ -65,20 +66,20 @@ class CompanyController extends Controller
                                     <i class="ti ti-dots-vertical"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="'.$previewUrl.'">
+                                        <i class="ti ti-eye text-blue-light"></i> Preview
+                                    </a>
                                     <a class="dropdown-item edit-company" href="javascript:void(0);" data-id="'.$row->id.'" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_edit">
                                         <i class="ti ti-edit text-blue"></i> Edit
                                     </a>
                                     <a class="dropdown-item delete-company" href="#" data-id="'.$row->id.'" data-bs-toggle="modal" data-bs-target="#delete_contact">
                                         <i class="ti ti-trash"></i> Delete
                                     </a>
-                                    <a class="dropdown-item" href="'.$previewUrl.'">
-                                        <i class="ti ti-eye text-blue-light"></i> Preview
-                                    </a>
                                 </div>
                             </div>
                         ';
                     })
-                    ->rawColumns(['status', 'action'])
+                    ->rawColumns(['name', 'status', 'action'])
                     ->make(true);
             } else {
                 $total = $query->count();
@@ -92,8 +93,9 @@ class CompanyController extends Controller
         $companies = Company::latest()->take($limit)->get();
         $companycount = Company::count();
         $industrys = config('static.industrys');
+        $company_types = config('static.company_types');
         $sources = config('static.lead_sources');
-        return view('companies.index', compact('companies','companycount', 'industrys', 'sources'));
+        return view('companies.index', compact('companies','companycount', 'industrys', 'sources', 'company_types'));
     }
 
     public function store(Request $request)
@@ -102,15 +104,15 @@ class CompanyController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
-                'phone_1' => 'required|string|max:20',
+                'phone_1' => 'required|digits_between:10,10',
+                'phone_2' => 'nullable|digits_between:10,10',
                 'source' => 'required|string|max:255',
                 'industry' => 'required|string|max:255',
-                'phone_2' => 'nullable|string|max:20',
+                'type' => 'required|string',
                 'fax' => 'nullable|string|max:20',
                 'address' => 'nullable|string|max:500',
                 'website' => 'nullable|url|max:255',
                 'owner' => 'nullable|string|max:255',
-                'tags' => 'nullable|string|max:255',
                 'country' => 'nullable|string|max:100',
                 'state' => 'nullable|string|max:100',
                 'city' => 'nullable|string|max:100',
@@ -156,7 +158,7 @@ class CompanyController extends Controller
                 'owner' => 'nullable|string|max:255',
                 'source' => 'nullable|string|max:255',
                 'industry' => 'nullable|string|max:255',
-                'tags' => 'nullable|string|max:255',
+                'type' => 'required|string',
                 'country' => 'nullable|string|max:100',
                 'state' => 'nullable|string|max:100',
                 'city' => 'nullable|string|max:100',
@@ -199,7 +201,8 @@ class CompanyController extends Controller
             $company = Company::findOrFail($id);
             $industrys = config('static.industrys');
             $sources = config('static.lead_sources');
-            return view('companies.edit', compact('company', 'industrys', 'sources'));
+            $company_types = config('static.company_types');
+            return view('companies.edit', compact('company', 'industrys', 'sources','company_types'));
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
