@@ -161,7 +161,9 @@
                                 class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
                                 <h5 class="fw-semibold mb-0">Activities</h5>
                                 <div class="dropdown">
-                                    <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_activity"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add New Activity</a>
+                                    @if(!$lead->is_closed)
+                                        <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_activity"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add New Activity</a>
+                                    @endif
                                 </div>
                             </div>
                             @if($lead->activities->isEmpty())

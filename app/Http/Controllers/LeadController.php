@@ -167,6 +167,14 @@ class LeadController extends Controller
                 $packages = $lead->package ? ProductDetail::where('id', $lead->package)->first() : null;
                 $lead_status = config('static.lead_status');
                 $allproducts = Product::all();
+                // here get all activities of lead any one close meant lead is closed set one var to open / close activities
+                $activities = LeadActivity::where('lead_id', $lead->id)->get();
+                $lead->is_closed = false;
+                if($activities){
+                    $closeActivities = $activities->where('status', 'Closed')->count();
+                    $lead->is_closed = $closeActivities > 0 ? true : false;
+                }
+
                 return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages', 'allproducts'));
             }
             return redirect()->route('leads.index')->with('error', 'Lead not found.');
