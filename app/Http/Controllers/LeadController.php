@@ -259,8 +259,9 @@ class LeadController extends Controller
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
         ]);
-        if($request->status == 'Followup'){
-            $lead->product = $request->product;
+
+        if($request->status == 'Followup' && $request->product && $request->package){
+            $lead->plan = $request->product;
             $lead->package = $request->package;
             $lead->save();
         }
