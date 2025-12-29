@@ -225,8 +225,10 @@
             var selectedStatus = $(this).val();
             if(selectedStatus === 'Followup') {
                 $('.product_lists').show();
+                $('#product_to_packages').attr('required', true);
             } else {
                 $('.product_lists').hide();
+                $('#product_to_packages').attr('required', false);
             }
         });
     });
