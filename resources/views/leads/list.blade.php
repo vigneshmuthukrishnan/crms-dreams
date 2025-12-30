@@ -6,6 +6,7 @@
                     <tr>
                         <th class="no-sort">S.no</th>
                         <th>Company Name</th>
+                        <th> Customer Name</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Lead Status</th>

@@ -60,12 +60,6 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">GST</label>
-                                        <input type="text" class="form-control" name="fax" placeholder="Enter GST">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
                                         <label class="form-label">Website</label>
                                         <input type="text" class="form-control" name="website" placeholder="Enter Website URL">
                                     </div>
@@ -136,6 +130,12 @@
                     <div class="accordion-collapse collapse" id="address" data-bs-parent="#main_accordion">
                         <div class="accordion-body border-top">
                             <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">GST</label>
+                                        <input type="text" class="form-control" name="fax" placeholder="Enter GST">
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Street Address </label>

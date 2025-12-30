@@ -15,7 +15,9 @@
                                 </a>
                             </h6>
                             <div class="set-star text-default"> 
-                                <i class="ti ti-star-filled me-1 text-warning"></i>4.2
+                                <a href="{{ url('/companies/'.$company->id) }}">
+                                    {{ Str::limit($company->owner, 15) }}
+                                </a>
                             </div>
                         </div>
                     </div>

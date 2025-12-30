@@ -110,6 +110,7 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'name', name: 'name', orderable: false, searchable: true},
+                    {data: 'owner', name: 'owner', orderable: false, searchable: true},
                     {data: 'phone', name: 'phone', orderable: false, searchable: true},
                     {data: 'email', name: 'email', orderable: false, searchable: true},
                     {data: 'action', name: 'action', orderable: false, searchable: false}

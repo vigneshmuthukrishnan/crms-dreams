@@ -63,6 +63,9 @@ class LeadController extends Controller
                             </a>
                         </h6>';
                     })
+                    ->addColumn('customer_name', function($row) {
+                        return $row->company->owner ?? '-';
+                    })
                     ->addColumn('status', function($row) {
                         if($row->activitiestatus->first()){
                             $str = setColorStatus($row->activitiestatus->first()->status);

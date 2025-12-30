@@ -19,6 +19,11 @@
                                     {{ Str::limit($lead->company->name, 15) }}
                                 </a>
                             </h6>
+                            <div class="set-star text-default"> 
+                                <a href="{{ url('/leads/'.$lead->id) }}">
+                                    {{ Str::limit($lead->company->owner, 15) }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="dropdown table-action">
