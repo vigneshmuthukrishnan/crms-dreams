@@ -46,23 +46,23 @@
                     <table class="table table-nowrap" id="manage-users-list">
                         <thead class="table-light">
                             <tr>
-                                <th>Company</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Product</th>
-                                <th>Status</th>
-                                <th>Next Action Date</th>
+                                <th width="30%">Company</th>
+                                <th width="15%">Phone</th>
+                                <th width="15%">Email</th>
+                                <th width="15%">Product</th>
+                                <th width="10%">Status</th>
+                                <th width="15%">Next Action Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($Leadactivitys as $Leadactivity)
                                 <tr>
-                                    <td>{{ $Leadactivity->company->name }}, {{ $Leadactivity->lead->customer_name }}</td>
-                                    <td>{{ $Leadactivity->lead->number }}</td>
-                                    <td>{{ $Leadactivity->lead->email }}</td>
-                                    <td>{{ $Leadactivity->product->name ?? '-' }} / {{ $Leadactivity->productdetail->quantity ?? '-' }}</td>
-                                    <td>{{ ucfirst($Leadactivity->status) }}</td>
-                                    <td>{{ $Leadactivity->next_action_date ? date('d-m-Y', strtotime($Leadactivity->next_action_date)) : '-' }}</td>
+                                    <td width="30%">{{ $Leadactivity->company->name }}, {{ $Leadactivity->lead->customer_name }}</td>
+                                    <td width="15%">{{ $Leadactivity->lead->number }}</td>
+                                    <td width="15%">{{ $Leadactivity->lead->email }}</td>
+                                    <td width="15%" >{{ $Leadactivity->product->name ?? '-' }} / {{ $Leadactivity->productdetail->quantity ?? '-' }}</td>
+                                    <td width="10%">{{ ucfirst($Leadactivity->status) }}</td>
+                                    <td width="15%">{{ $Leadactivity->next_action_date ? date('d-m-Y', strtotime($Leadactivity->next_action_date)) : '-' }}</td>
                                 </tr>
                             @empty
                                 <tr>
