@@ -30,11 +30,11 @@
                             </select>
                         </div>
                         <div class="col-md-2 mb-3">
-                            <input type="date" class="form-control" id="fromdate" name="fromdate" placeholder="From Date"  value="{{ request('fromdate') }}">
+                            <input type="date" class="form-control" id="fromdate" name="fromdate" placeholder="From Date"  value="{{ $fromdate }}">
                         </div>
-                        <div class="col-md-2 mb-3">
-                            <input type="date" class="form-control" id="todate" name="todate" placeholder="To Date" value="{{ request('todate') }}">
-                        </div>
+                        <!-- <div class="col-md-2 mb-3">
+                            <input type="date" class="form-control" id="todate" name="todate" placeholder="To Date" value="{{ $todate }}">
+                        </div> -->
                         <div class="col-md-2 mb-3">
                             <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>                         
                             <a href="{{ route('report.leads') }}" class="btn btn-info">Reset</a>                      
@@ -46,29 +46,23 @@
                     <table class="table table-nowrap" id="manage-users-list">
                         <thead class="table-light">
                             <tr>
-                                <th class="no-sort">S.no</th>
-                                <th>Lead Name</th>
+                                <th>Company</th>
                                 <th>Phone</th>
                                 <th>Email</th>
-                                <th>Company</th>
-                                <th>Created</th>
                                 <th>Product</th>
-                                <th>Amount</th>
                                 <th>Status</th>
+                                <th>Next Action Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($leads as $lead)
+                            @forelse($Leadactivitys as $Leadactivity)
                                 <tr>
-                                    <td>{{ $lead->id }}</td>
-                                    <td>{{ $lead->name }}</td>
-                                    <td>{{ $lead->number }}</td>
-                                    <td>{{ $lead->email }}</td>
-                                    <td>{{ $lead->company_name }}</td>
-                                    <td>{{ $lead->created_at->format('d-m-Y') }}</td>
-                                    <td>{{ $lead->product->name ?? '-' }} / {{ $lead->productdetail->quantity ?? '-' }}</td>
-                                    <td>{{ $lead->productdetail->total ?? '0' }}</td>
-                                    <td>{{ ucfirst($lead->status) }}</td>
+                                    <td>{{ $Leadactivity->company->name }}, {{ $Leadactivity->lead->customer_name }}</td>
+                                    <td>{{ $Leadactivity->lead->number }}</td>
+                                    <td>{{ $Leadactivity->lead->email }}</td>
+                                    <td>{{ $Leadactivity->product->name ?? '-' }} / {{ $Leadactivity->productdetail->quantity ?? '-' }}</td>
+                                    <td>{{ ucfirst($Leadactivity->status) }}</td>
+                                    <td>{{ $Leadactivity->next_action_date ? date('d-m-Y', strtotime($Leadactivity->next_action_date)) : '-' }}</td>
                                 </tr>
                             @empty
                                 <tr>
@@ -78,7 +72,7 @@
                         </tbody>
                     </table>
                     <div class="mt-3">
-                        {{ $leads->links() }}
+                        {{ $Leadactivitys->links() }}
                     </div>
                 </div>
             </div>

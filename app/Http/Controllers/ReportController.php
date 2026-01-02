@@ -7,41 +7,36 @@ use App\Models\Lead;
 use App\Models\Product;
 use App\Models\Company;
 use App\Models\ProductDetail;
+use App\Models\LeadActivity;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     public function leads(Request $request)
     {
+        // set default current date filters input 
+        $fromdate = date('Y-m-d');
+        $todate = date('Y-m-d', strtotime('+7 days'));
+
         $user = auth()->user();
-        $query = $user->admin ? Lead::query() : Lead::where('assignee', $user->id);
-        
-        if ($request->filled('name')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%')
-                ->orWhere('email', 'like', '%' . $request->name . '%')
-                ->orWhere('number', 'like', '%' . $request->name . '%');
-            });
-        }
+        $query = $user->admin ? LeadActivity::whereNotNull('next_action_date') : LeadActivity::whereNotNull('next_action_date')->where('created_by', $user->id);
 
         if ($request->status) {
             $query->where('status', $request->status);
         }
-
-        if ($request->filled('fromdate') && $request->filled('todate')) {
-            $query->whereBetween('created_at', [
-                $request->fromdate . ' 00:00:00',
-                $request->todate . ' 23:59:59'
-            ]);
+        if ($request->fromdate) {
+            $fromdate = $request->fromdate;
+            $query->whereDate('next_action_date', '>=', $request->fromdate);
         }
-        
-        $leads = $query
+
+        $Leadactivitys = $query
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
 
+
         $lead_status = config('static.lead_status');
 
-        return view('reports.leads', compact('leads', 'lead_status'));
+        return view('reports.leads', compact('Leadactivitys', 'lead_status', 'fromdate', 'todate'));
     }
 }
