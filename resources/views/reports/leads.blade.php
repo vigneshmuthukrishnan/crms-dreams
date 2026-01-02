@@ -42,8 +42,8 @@
                     </div>
                 </form>
 
-                <div class="table-responsive custom-table" style="overflow-x: hidden !important;">
-                    <table class="table table-nowrap" id="manage-users-list">
+                <div class="table-responsive custom-table">
+                    <table class="table align-middle table-hover crm-table" id="manage-users-list">
                         <thead class="table-light">
                             <tr>
                                 <th width="30%">Company</th>
@@ -57,16 +57,16 @@
                         <tbody>
                             @forelse($Leadactivitys as $Leadactivity)
                                 <tr>
-                                    <td width="30%">{{ $Leadactivity->company->name }}, {{ $Leadactivity->lead->customer_name }}</td>
+                                    <td width="30%" style="white-space: normal; word-break: break-word;">{{ $Leadactivity->company->name }} <br> {{ $Leadactivity->lead->customer_name }}</td>
                                     <td width="15%">{{ $Leadactivity->lead->number }}</td>
                                     <td width="15%">{{ $Leadactivity->lead->email }}</td>
-                                    <td width="15%" >{{ $Leadactivity->product->name ?? '-' }} / {{ $Leadactivity->productdetail->quantity ?? '-' }}</td>
+                                    <td width="15%">{{ $Leadactivity->product->name ?? '-' }} / {{ $Leadactivity->productdetail->quantity ?? '-' }}</td>
                                     <td width="10%">{{ ucfirst($Leadactivity->status) }}</td>
                                     <td width="15%">{{ $Leadactivity->next_action_date ? date('d-m-Y', strtotime($Leadactivity->next_action_date)) : '-' }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center text-danger">No records found</td>
+                                    <td colspan="6" class="text-center text-danger">No records found</td>
                                 </tr>
                             @endforelse
                         </tbody>
