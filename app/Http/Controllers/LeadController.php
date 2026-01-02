@@ -9,6 +9,7 @@ use App\Models\LeadActivity;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\User;
+use App\Models\Sale;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
 
@@ -21,7 +22,7 @@ class LeadController extends Controller
         $offset = ($page - 1) * $limit;   
         $user = auth()->user();
 
-        $query = $user->admin ? Lead::query() : Lead::where('assignee', $user->id);
+        $query = $user->admin ? Lead::where('convert_sales', 0) : Lead::where('assignee', $user->id)->where('convert_sales', 0);
 
         if ($request->name) {
             $query->where(function($q) use ($request) {
@@ -169,16 +170,31 @@ class LeadController extends Controller
                 $products = Product::where('id', $lead->plan)->first();
                 $packages = $lead->package ? ProductDetail::where('id', $lead->package)->first() : null;
                 $lead_status = config('static.lead_status');
+                $sales_types = config('static.sales_types');
+                $payment_modes = config('static.payment_mode');
                 $allproducts = Product::all();
                 // here get all activities of lead any one close meant lead is closed set one var to open / close activities
                 $activities = LeadActivity::where('lead_id', $lead->id)->get();
-                $lead->is_closed = false;
                 if($activities){
-                    $closeActivities = $activities->where('status', 'Closed')->count();
-                    $lead->is_closed = $closeActivities > 0 ? true : false;
-                }
+                    $lead->is_closed = $activities
+                        ->whereIn('status', ['Closed'])
+                        ->isNotEmpty();
 
-                return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages', 'allproducts'));
+                    $lead->is_invalid = !$lead->is_closed && $activities
+                        ->whereIn('status', ['Invalid Number', 'Junk'])
+                        ->isNotEmpty();
+
+                    $lead->is_next_callback = !$lead->is_closed && !$lead->is_invalid && $activities
+                        ->whereIn('status', [
+                            'RNR',
+                            'Followup',
+                            'Not Interested',
+                            'Future Requirement'
+                        ])
+                        ->isNotEmpty();
+                }
+                
+                return view('leads.show', compact('lead', 'leadCount', 'lead_status', 'products', 'packages', 'allproducts', 'sales_types', 'payment_modes'));
             }
             return redirect()->route('leads.index')->with('error', 'Lead not found.');
         }  catch (\Exception $e) {
@@ -243,12 +259,20 @@ class LeadController extends Controller
     // Lead Activities functions
     public function addActivity(Request $request, $leadId)
     {
-        $validator = Validator::make($request->all(), [
-            'activity_type' => 'required|string',
-            'remarks' => 'required|string',
-            'next_action_date' => 'required|date',
-            'status' => 'required|string',
-        ]);
+        if($request->status == 'Closed' || $request->status == 'Invalid Number' || $request->status == 'Junk'){
+            $valid = [
+                'activity_type' => 'required|string',
+                'status' => 'required|string',
+            ];
+        } else {
+            $valid = [
+                'activity_type' => 'required|string',
+                'remarks' => 'required|string',
+                'next_action_date' => 'required|date',
+                'status' => 'required|string',
+            ];
+        }
+        $validator = Validator::make($request->all(), $valid);
         if ($validator->fails()) {
             if ($request->expectsJson()) {
                 $errors = $validator->errors()->all();
@@ -264,8 +288,8 @@ class LeadController extends Controller
         $activity = LeadActivity::create([
             'lead_id' => $lead->id,
             'type' => $validated['activity_type'],
-            'remark' => $validated['remarks'],
-            'next_action_date' => $validated['next_action_date'],
+            'remark' => $validated['remarks'] ?? null,
+            'next_action_date' => $validated['next_action_date'] ?? null,
             'status' => $validated['status'],
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
@@ -278,4 +302,57 @@ class LeadController extends Controller
         }
         return response()->json(['success' => true, 'message' => 'Activity added successfully!', 'activity' => $activity], 201);
     }
+
+
+    // add sales details
+    public function storeSales(Request $request)
+    {
+        try {
+            //code...
+            $validator = Validator::make($request->all(), [
+                'company_id' => 'required|exists:companies,id',
+                'lead_id' => 'required|exists:leads,id',
+
+                'sales_type' => 'required|string',
+                'payment_mode' => 'required|string',
+
+                'amount' => 'required|numeric',
+                'gst' => 'nullable|numeric',
+                'total' => 'required|numeric',
+            ]);
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    $errors = $validator->errors()->all();
+                    $errorMessage = implode(', ', $errors);
+                    return response()->json(['success' => false, 'message' => $errorMessage], 422);
+                }
+                return back()->withErrors($validator)->withInput();
+            }
+            $validated = $validator->validated();
+    
+            $sale = Sale::create([
+                'company_id' => $validated['company_id'],
+                'lead_id' => $validated['lead_id'],
+                'date' => now(),
+
+                'type' => $validated['sales_type'],
+                'payment_mode' => $validated['payment_mode'],
+                'transaction_details' => $validated['transaction_details'] ?? null,  
+                
+                'amount' => $validated['amount'] ?? 0,
+                'gst' => $validated['gst'] ?? 0,
+                'grand_total' => $validated['total'] ?? 0,
+                'created_by' => auth()->user()->id,
+            ]);
+
+            $lead = Lead::findOrFail($validated['lead_id']);
+            $lead->convert_sales = 1;
+            $lead->save();
+
+            return response()->json(['success' => true, 'message' => 'Sales details added successfully!', 'sale' => $sale], 201);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
 }

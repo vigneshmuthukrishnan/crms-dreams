@@ -26,4 +26,6 @@ return [
         'Hospitality', 'Manufacturing', 'Real Estate', 'Retail', 'Technology', 
         'Telecommunications', 'Transportation', 'Other'
     ],
+    'sales_types' => ['Fresh', 'Renewal','Old'],
+    'payment_mode' => ['Current Account', 'Payment Gateway', 'Digital Payment', 'Cash', 'Credit Card', 'Debit Card', 'Net Banking', 'UPI', 'Wallet', 'Cheque', 'NEFT', 'RTGS'],
 ];

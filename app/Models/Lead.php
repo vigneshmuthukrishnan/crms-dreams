@@ -23,6 +23,7 @@ class Lead extends Model
         'date',
         'plan',
         'package',
+        'convert_sales',
         'amount',
         'next_action_date',
         'status',

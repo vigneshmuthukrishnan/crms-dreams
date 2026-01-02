@@ -85,7 +85,7 @@
                         </div>
 
                         
-                        <div class="col-md-6">
+                        <div class="col-md-6 next_action_date_div">
                             <div class="mb-3">
                                 <label class="form-label">Next Action Date <span class="text-danger">*</span></label>
                                 <div class="input-group w-auto input-group-flat">
@@ -120,7 +120,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 description_div">
                             <div class="mb-00">
                                 <label class="form-label">Description<span class="text-danger ms-1">*</span></label>
                                 <textarea class="form-control" rows="3" name="remarks"></textarea>

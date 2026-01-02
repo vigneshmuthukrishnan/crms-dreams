@@ -17,8 +17,8 @@
                                 <span class="status online"></span>
                             </div>
                             <div>
-                                <h5 class="mb-1">{{ $lead->name}}</h5>
-                                <p class="mb-1">{{ $lead->company->name}}</p>
+                                <h5 class="mb-1">{{ $lead->company->name}}</h5>
+                                <p class="mb-1">{{ $lead->company->owner}}</p>
                             </div>
                         </div>
                         <div class="d-flex align-items-center flex-wrap gap-2">
@@ -127,26 +127,6 @@
                                     <span class="d-md-inline-block"><i class="ti ti-alarm-minus me-1"></i>Activities</span>
                                 </a>
                             </li>
-                            <!-- <li class="nav-item" role="presentation">
-                                <a href="#tab_2" data-bs-toggle="tab" aria-expanded="true" class="nav-link border-3" aria-selected="false" role="tab" tabindex="-1">
-                                    <span class="d-md-inline-block"><i class="ti ti-notes me-1"></i>Notes</span>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a href="#tab_3" data-bs-toggle="tab" aria-expanded="false" class="nav-link border-3" aria-selected="false" tabindex="-1" role="tab">
-                                    <span class="d-md-inline-block"><i class="ti ti-phone me-1"></i>Calls</span>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a href="#tab_4" data-bs-toggle="tab" aria-expanded="false" class="nav-link border-3" aria-selected="false" tabindex="-1" role="tab">
-                                    <span class="d-md-inline-block"><i class="ti ti-file me-1"></i>Files</span>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a href="#tab_5" data-bs-toggle="tab" aria-expanded="false" class="nav-link border-3" aria-selected="false" tabindex="-1" role="tab">
-                                    <span class="d-md-inline-block"><i class="ti ti-mail-check me-1"></i>Email</span>
-                                </a>
-                            </li> -->
                         </ul>
                     </div>
                 </div>
@@ -161,8 +141,10 @@
                                 class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
                                 <h5 class="fw-semibold mb-0">Activities</h5>
                                 <div class="dropdown">
-                                    @if(!$lead->is_closed)
+                                    @if($lead->is_next_callback || (!$lead->is_next_callback && !$lead->is_closed && !$lead->is_invalid))
                                         <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_activity"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add New Activity</a>
+                                    @elseif($lead->is_closed)
+                                        <a href="javascript:void(0);" class="btn btn-secondary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_sales"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add Sales Details</a>
                                     @endif
                                 </div>
                             </div>
@@ -185,6 +167,7 @@
 </x-app-layout>
 
 @include('leads.activities', compact('allproducts'))
+@include('leads.sales', compact('lead', 'allproducts', 'sales_types', 'payment_modes'))
 
 <script>
     $(document).ready(function () {
@@ -203,6 +186,25 @@
                 },
                 error: function(xhr) {                   
                      errorMsg(xhr.responseJSON.message || 'An error occurred while creating the Lead Activity.');
+                }
+            });
+        });
+
+        $('#createLeadSalesForm').on('submit', function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("leads.storeSales") }}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    successMsg('Sales created successfully!');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    errorMsg(xhr.responseJSON.message || 'An error occurred while creating the Lead Activity.');
                 }
             });
         });
@@ -228,10 +230,39 @@
             if(selectedStatus === 'Followup') {
                 $('.product_lists').show();
                 $('#product_to_packages').attr('required', true);
+                $('.next_action_date_div').show();
+                $('.description_div').show();
+            } else if(selectedStatus === 'Closed' || selectedStatus === 'Invalid Number' || selectedStatus === 'Junk') {
+                $('.product_lists').hide();
+                $('.next_action_date_div').hide();
+                $('.description_div').hide();
             } else {
                 $('.product_lists').hide();
                 $('#product_to_packages').attr('required', false);
+                $('.next_action_date_div').show();
+                $('.description_div').show();
             }
+        });
+
+        // here when entry amount gst total auto calculate
+        $('input[name="amount"]').on('input', function() {
+            var amount = parseFloat($('input[name="amount"]').val()) || 0;
+            var gst = parseFloat($('input[name="gst"]').val()) || 0;
+            var total = amount + gst;
+            if($('input[name="gst"]').val() == '') {
+                $('input[name="gst"]').val(gst.toFixed(2));
+            }
+            $('input[name="total"]').val(total.toFixed(2));
+        });
+        
+        $('input[name="gst"]').on('input', function() {
+            var amount = parseFloat($('input[name="amount"]').val()) || 0;
+            var gst = parseFloat($('input[name="gst"]').val()) || 0;
+            var total = amount + gst;
+            if($('input[name="amount"]').val() == '') {
+                $('input[name="amount"]').val(gst.toFixed(2));
+            }
+            $('input[name="total"]').val(total.toFixed(2));
         });
     });
 </script>

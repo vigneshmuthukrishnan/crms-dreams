@@ -9,6 +9,7 @@ use App\Http\Controllers\LeadController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SalesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,7 +63,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/leads/edit/{id}', [LeadController::class, 'edit'])->name('leads.edit');
     Route::post('/leads/update/{id}', [LeadController::class, 'update'])->name('leads.update');
     Route::delete('/leads/delete/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
-    Route::get('/leads/{id}', [LeadController::class, 'show'])->name('leads.show'); 
+    Route::get('/leads/{id}', [LeadController::class, 'show'])->name('leads.show');
+    Route::post('/leads/storeSales', [LeadController::class, 'storeSales'])->name('leads.storeSales');
 
     // lead activities
     Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add'); 
@@ -74,6 +76,9 @@ Route::middleware('auth')->group(function () {
 
     // Report 
     Route::get('/report/leads', [ReportController::class, 'leads'])->name('report.leads');
+
+    // sales routes
+    Route::get('/clients', [SalesController::class, 'index'])->name('clients.index');
 });
 
 // Admin can do user management

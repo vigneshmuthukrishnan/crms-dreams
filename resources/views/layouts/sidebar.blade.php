@@ -48,6 +48,9 @@
                             <a href="{{ url('/product') }}"><i class="ti ti-atom-2"></i><span>Product</span></a>
                         </li>
                         @endif
+                        <li class="{{ Route::is('clients.*') ? 'active' : '' }}">
+                            <a href="{{ url('/clients') }}"><i class="ti ti-chart-candle"></i><span>Clients</span></a>
+                        </li>
                     </ul>
                 </li>
                 @if(auth()->user()->admin)
