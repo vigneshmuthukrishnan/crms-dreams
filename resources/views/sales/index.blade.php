@@ -54,10 +54,10 @@
                         <tbody>
                             @foreach ($clients as $index => $client)
                                 <tr>
-                                    <td>{{ $clients->firstItem() + $index }}</td>
-                                    <td>
+                                    <td >{{ $clients->firstItem() + $index }}</td>
+                                    <td class="word-break">
                                         @if($client->lead)
-                                            {{ $client->company->name }}, {{ $client->lead->customer_name }}
+                                            {{ $client->company->name }}<br>{{ $client->lead->customer_name }}
                                         @else
                                             N/A
                                         @endif

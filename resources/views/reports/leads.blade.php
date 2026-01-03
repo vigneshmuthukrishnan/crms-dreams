@@ -57,10 +57,14 @@
                         <tbody>
                             @forelse($Leadactivitys as $Leadactivity)
                                 <tr>
-                                    <td width="30%" style="white-space: normal; word-break: break-word;">{{ $Leadactivity->company->name }} <br> {{ $Leadactivity->lead->customer_name }}</td>
+                                    <td width="30%" class="word-break">
+                                        {{ $Leadactivity->company->name }} <br> {{ $Leadactivity->lead->customer_name }}
+                                    </td>
                                     <td width="15%">{{ $Leadactivity->lead->number }}</td>
                                     <td width="15%">{{ $Leadactivity->lead->email }}</td>
-                                    <td width="15%">{{ $Leadactivity->product->name ?? '-' }} / {{ $Leadactivity->productdetail->quantity ?? '-' }}</td>
+                                    <td width="15%">
+                                        {{ $Leadactivity->product->name ?? '-' }} / {{ $Leadactivity->productdetail->quantity ?? '-' }}
+                                    </td>
                                     <td width="10%">{{ ucfirst($Leadactivity->status) }}</td>
                                     <td width="15%">{{ $Leadactivity->next_action_date ? date('d-m-Y', strtotime($Leadactivity->next_action_date)) : '-' }}</td>
                                 </tr>
@@ -71,7 +75,7 @@
                             @endforelse
                         </tbody>
                     </table>
-                    <div class="mt-3">
+                    <div class="mt-3 lead-report-pagination">
                         {{ $Leadactivitys->links() }}
                     </div>
                 </div>

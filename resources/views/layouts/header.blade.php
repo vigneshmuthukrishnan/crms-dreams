@@ -42,7 +42,7 @@
                     <div class="d-flex align-items-center bg-light rounded-3 p-2 mb-2">
                         <img src="{{ user_avatar(Auth::user()->name) }}" class="rounded-circle" width="42" height="42" alt="Img">
                         <div class="ms-2">
-                            <p class="fw-medium text-dark mb-0">{{ Auth::user()->email }}</p>
+                            <p class="fw-medium text-dark mb-0 word-break">{{ Auth::user()->email }}</p>
                             <span class="d-block fs-13">{{ Auth::user()->name }}</span>
                         </div>
                     </div>

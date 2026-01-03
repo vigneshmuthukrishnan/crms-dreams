@@ -14089,3 +14089,8 @@ th.fc-day-header {
 .table-responsive {
   overflow-x: hidden !important;
 }
+
+.word-break {
+  white-space: normal;
+  word-break: break-word;
+}
