@@ -84,7 +84,6 @@
                             </div>
                         </div>
 
-                        
                         <div class="col-md-6 next_action_date_div">
                             <div class="mb-3">
                                 <label class="form-label">Next Action Date <span class="text-danger">*</span></label>
@@ -127,6 +126,48 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row sales_fields mb-3" style="display:none;"> 
+                        <input type="hidden" name="lead_id" value="{{ $lead->id }}">
+                        <input type="hidden" name="company_id" value="{{ $lead->company_id }}">                      
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label requirded">Type <span class="text-danger">*</span></label>
+                                <select name="sales_type" class="form-select">
+                                    <option value="">Select Type</option>
+                                    @foreach($sales_types as $type)
+                                        <option value="{{ $type }}">{{ $type }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label requirded">Paymode <span class="text-danger">*</span></label>
+                                <select name="payment_mode" class="form-select">
+                                    <option value="">Select Paymode</option>
+                                    @foreach($payment_modes as $mode)
+                                        <option value="{{ $mode }}">{{ $mode }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label requirded">Amount <span class="text-danger">*</span></label>
+                            <input type="number" name="amount" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label requirded">GST <span class="text-danger">*</span></label>
+                            <input type="number" name="gst" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label requirded">Total <span class="text-danger">*</span></label>
+                            <input type="number" name="total" class="form-control" required>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="d-flex align-items-center justify-content-end mt-3">
                     <button type="button" data-bs-dismiss="offcanvas" class="btn btn-light me-2">Cancel</button>

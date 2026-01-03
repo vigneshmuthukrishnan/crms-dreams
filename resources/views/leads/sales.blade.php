@@ -38,20 +38,7 @@
                     @else
                         <p>{{ $lead->productdetail->product->name }} - {{ $lead->productdetail->quantity }}</p>
                     @endif
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label requirded">Amount <span class="text-danger">*</span></label>
-                    <input type="number" name="amount" class="form-control" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label requirded">GST <span class="text-danger">*</span></label>
-                    <input type="number" name="gst" class="form-control" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label requirded">Total <span class="text-danger">*</span></label>
-                    <input type="number" name="total" class="form-control" required>
-                </div>
-                
+                </div>               
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label requirded">Type <span class="text-danger">*</span></label>
@@ -75,7 +62,18 @@
                         </select>
                     </div>
                 </div>
-
+                <div class="col-md-4 mb-3">
+                    <label class="form-label requirded">Amount <span class="text-danger">*</span></label>
+                    <input type="number" name="amount" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label requirded">GST <span class="text-danger">*</span></label>
+                    <input type="number" name="gst" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label requirded">Total <span class="text-danger">*</span></label>
+                    <input type="number" name="total" class="form-control" required>
+                </div>
                 <div class="col-md-12">
                     <div class="mb-00">
                         <label class="form-label">Transaction Details<span class="text-danger ms-1">*</span></label>

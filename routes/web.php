@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,7 +89,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::put('/users/update/{id}', [UserController::class, 'updateUser'])->name('users.updateUser');
 
     // Attendance Route
-    Route::get('/attendances', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('attendances.index');
+    Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
 });
 
 require __DIR__.'/auth.php';

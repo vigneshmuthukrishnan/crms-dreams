@@ -259,10 +259,25 @@ class LeadController extends Controller
     // Lead Activities functions
     public function addActivity(Request $request, $leadId)
     {
-        if($request->status == 'Closed' || $request->status == 'Invalid Number' || $request->status == 'Junk'){
+        if($request->status == 'Invalid Number' || $request->status == 'Junk'){
             $valid = [
                 'activity_type' => 'required|string',
                 'status' => 'required|string',
+            ];
+        } else if($request->status == 'Closed') {
+            $valid = [
+                'activity_type' => 'required|string',
+                'status' => 'required|string',
+
+                'company_id' => 'required|exists:companies,id',
+                'lead_id' => 'required|exists:leads,id',
+
+                'sales_type' => 'required|string',
+                'payment_mode' => 'required|string',
+
+                'amount' => 'required|numeric',
+                'gst' => 'nullable|numeric',
+                'total' => 'required|numeric',
             ];
         } else {
             $valid = [
@@ -298,8 +313,29 @@ class LeadController extends Controller
         if($request->status == 'Followup' && $request->product && $request->package){
             $lead->plan = $request->product;
             $lead->package = $request->package;
-            $lead->save();
         }
+        if($request->status == 'Closed'){
+            $sale = Sale::create([
+                'company_id' => $validated['company_id'],
+                'lead_id' => $validated['lead_id'],
+                'date' => now(),
+
+                'type' => $validated['sales_type'],
+                'payment_mode' => $validated['payment_mode'],
+                'transaction_details' => $validated['transaction_details'] ?? null,  
+                
+                'amount' => $validated['amount'] ?? 0,
+                'gst' => $validated['gst'] ?? 0,
+                'grand_total' => $validated['total'] ?? 0,
+                'created_by' => auth()->user()->id,
+            ]);
+            if($request->product && $request->package){
+                $lead->plan = $request->product;
+                $lead->package = $request->package;
+            }
+            $lead->convert_sales = 1;
+        }
+        $lead->save();
         return response()->json(['success' => true, 'message' => 'Activity added successfully!', 'activity' => $activity], 201);
     }
 

@@ -143,8 +143,6 @@
                                 <div class="dropdown">
                                     @if($lead->is_next_callback || (!$lead->is_next_callback && !$lead->is_closed && !$lead->is_invalid))
                                         <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_activity"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add New Activity</a>
-                                    @elseif($lead->is_closed)
-                                        <a href="javascript:void(0);" class="btn btn-secondary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_sales"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add Sales Details</a>
                                     @endif
                                 </div>
                             </div>
@@ -167,7 +165,7 @@
 </x-app-layout>
 
 @include('leads.activities', compact('allproducts'))
-@include('leads.sales', compact('lead', 'allproducts', 'sales_types', 'payment_modes'))
+<!-- @include('leads.sales', compact('lead', 'allproducts', 'sales_types', 'payment_modes')) -->
 
 <script>
     $(document).ready(function () {
@@ -232,15 +230,25 @@
                 $('#product_to_packages').attr('required', true);
                 $('.next_action_date_div').show();
                 $('.description_div').show();
-            } else if(selectedStatus === 'Closed' || selectedStatus === 'Invalid Number' || selectedStatus === 'Junk') {
+                $('.sales_fields').hide();
+            } else if(selectedStatus === 'Invalid Number' || selectedStatus === 'Junk') {
                 $('.product_lists').hide();
                 $('.next_action_date_div').hide();
                 $('.description_div').hide();
+                $('.sales_fields').hide();
+            } else if(selectedStatus === 'Closed'){
+                $('.product_lists').hide();
+                $('.next_action_date_div').hide();
+                $('.description_div').hide();
+                $('.sales_fields').show();
+                $('.product_lists').show();
+                $('#product_to_packages').attr('required', true);
             } else {
                 $('.product_lists').hide();
                 $('#product_to_packages').attr('required', false);
                 $('.next_action_date_div').show();
                 $('.description_div').show();
+                $('.sales_fields').hide();
             }
         });
 
