@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Lead;
+use App\Models\Product;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -189,7 +191,10 @@ class CompanyController extends Controller
         try {
             $company = Company::findOrFail($id);
             $companycount = Company::count();
-            return view('companies.show', compact('company','companycount'));
+            $allproducts = Product::all();
+            $sales_types = config('static.sales_types');
+            $payment_modes = config('static.payment_mode');
+            return view('companies.show', compact('company','companycount','allproducts','sales_types','payment_modes'));
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
@@ -231,6 +236,57 @@ class CompanyController extends Controller
             }
             $company->delete();
             return response()->json(['success' => true, 'message' => 'Company deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function storeSales(Request $request)
+    {
+        try {
+            //code...
+            $validator = Validator::make($request->all(), [
+                'company_id' => 'required|exists:companies,id',
+
+                'sales_type' => 'required|string',
+                'payment_mode' => 'required|string',
+
+                'product' => 'required',
+                'package' => 'required',
+
+                'amount' => 'required|numeric',
+                'gst' => 'nullable|numeric',
+                'total' => 'required|numeric',
+            ]);
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    $errors = $validator->errors()->all();
+                    $errorMessage = implode(', ', $errors);
+                    return response()->json(['success' => false, 'message' => $errorMessage], 422);
+                }
+                return back()->withErrors($validator)->withInput();
+            }
+            $validated = $validator->validated();
+    
+            $sale = Sale::create([
+                'company_id' => $validated['company_id'],
+                'lead_id' => 0,
+                'date' => now(),
+
+                'type' => $validated['sales_type'],
+                'payment_mode' => $validated['payment_mode'],
+                'transaction_details' => $validated['transaction_details'] ?? null,  
+
+                'product' => $validated['product'] ?? null,
+                'package' => $validated['package'] ?? null,
+
+                'amount' => $validated['amount'] ?? 0,
+                'gst' => $validated['gst'] ?? 0,
+                'grand_total' => $validated['total'] ?? 0,
+                'created_by' => auth()->user()->id,
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Sales details added successfully!', 'sale' => $sale], 201);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }

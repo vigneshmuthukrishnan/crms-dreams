@@ -22,6 +22,8 @@ class Sale extends Model
         'gst_no',
         'payment_mode',
         'transaction_details',
+        'product',
+        'package',
         'amount',
         'gst',
         'grand_total',
@@ -67,5 +69,15 @@ class Sale extends Model
     public function lead()
     {
         return $this->belongsTo(Lead::class, 'lead_id');
+    }
+
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'product');
+    }
+
+    public function productdetail()
+    {
+        return $this->belongsTo(ProductDetail::class, 'package');
     }
 }

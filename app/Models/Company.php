@@ -39,4 +39,9 @@ class Company extends Model
     {
         return $this->hasMany(Lead::class, 'company_id');
     }
+
+    public function oneLead()
+    {
+        return $this->hasOne(Lead::class, 'company_id');
+    }
 }

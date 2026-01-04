@@ -252,25 +252,5 @@
             }
         });
 
-        // here when entry amount gst total auto calculate
-        $('input[name="amount"]').on('input', function() {
-            var amount = parseFloat($('input[name="amount"]').val()) || 0;
-            var gst = parseFloat($('input[name="gst"]').val()) || 0;
-            var total = amount + gst;
-            if($('input[name="gst"]').val() == '') {
-                $('input[name="gst"]').val(gst.toFixed(2));
-            }
-            $('input[name="total"]').val(total.toFixed(2));
-        });
-        
-        $('input[name="gst"]').on('input', function() {
-            var amount = parseFloat($('input[name="amount"]').val()) || 0;
-            var gst = parseFloat($('input[name="gst"]').val()) || 0;
-            var total = amount + gst;
-            if($('input[name="amount"]').val() == '') {
-                $('input[name="amount"]').val(gst.toFixed(2));
-            }
-            $('input[name="total"]').val(total.toFixed(2));
-        });
     });
 </script>

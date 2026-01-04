@@ -115,6 +115,9 @@
                             <div
                                 class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
                                 <h5 class="fw-semibold mb-0">Leads</h5>
+                                @if($company->oneLead && $company->oneLead->convert_sales)
+                                    <a href="javascript:void(0);" class="btn btn-primary"  data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add_sales">Add Sales</a>
+                                @endif
                             </div>
                             <div class="card-body">
                                 @foreach($company->leads as $lead)
@@ -147,3 +150,5 @@
 
     </div>
 </x-app-layout> 
+
+@include('companies.sales', compact('allproducts','sales_types','payment_modes'))

@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/companies/update/{id}', [CompanyController::class, 'update'])->name('companies.update');
     Route::delete('/companies/delete/{id}', [CompanyController::class, 'destroy'])->name('companies.destroy');
     Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
+    Route::post('/companies/storeSales', [CompanyController::class, 'storeSales'])->name('companies.storeSales');
     Route::get('/getIdLead/{id}', [CompanyController::class, 'getIdLead']);
 
     Route::post('/close-day', [AuthenticatedSessionController::class, 'closeDay'])->name('attendance.closeDay');
@@ -65,7 +66,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/leads/update/{id}', [LeadController::class, 'update'])->name('leads.update');
     Route::delete('/leads/delete/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
     Route::get('/leads/{id}', [LeadController::class, 'show'])->name('leads.show');
-    Route::post('/leads/storeSales', [LeadController::class, 'storeSales'])->name('leads.storeSales');
 
     // lead activities
     Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add'); 

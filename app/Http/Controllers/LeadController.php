@@ -271,9 +271,12 @@ class LeadController extends Controller
 
                 'company_id' => 'required|exists:companies,id',
                 'lead_id' => 'required|exists:leads,id',
-
+                
                 'sales_type' => 'required|string',
                 'payment_mode' => 'required|string',
+
+                'product' => 'required|string',
+                'package' => 'required|string',
 
                 'amount' => 'required|numeric',
                 'gst' => 'nullable|numeric',
@@ -322,73 +325,22 @@ class LeadController extends Controller
 
                 'type' => $validated['sales_type'],
                 'payment_mode' => $validated['payment_mode'],
-                'transaction_details' => $validated['transaction_details'] ?? null,  
-                
+                'transaction_details' => $validated['transaction_details'] ?? null, 
+
+                'product' => $validated['product'] ?? null,  
+                'package' => $validated['package'] ?? null,  
+
                 'amount' => $validated['amount'] ?? 0,
                 'gst' => $validated['gst'] ?? 0,
                 'grand_total' => $validated['total'] ?? 0,
                 'created_by' => auth()->user()->id,
             ]);
-            if($request->product && $request->package){
-                $lead->plan = $request->product;
-                $lead->package = $request->package;
-            }
+
             $lead->convert_sales = 1;
         }
         $lead->save();
         return response()->json(['success' => true, 'message' => 'Activity added successfully!', 'activity' => $activity], 201);
     }
 
-
-    // add sales details
-    public function storeSales(Request $request)
-    {
-        try {
-            //code...
-            $validator = Validator::make($request->all(), [
-                'company_id' => 'required|exists:companies,id',
-                'lead_id' => 'required|exists:leads,id',
-
-                'sales_type' => 'required|string',
-                'payment_mode' => 'required|string',
-
-                'amount' => 'required|numeric',
-                'gst' => 'nullable|numeric',
-                'total' => 'required|numeric',
-            ]);
-            if ($validator->fails()) {
-                if ($request->expectsJson()) {
-                    $errors = $validator->errors()->all();
-                    $errorMessage = implode(', ', $errors);
-                    return response()->json(['success' => false, 'message' => $errorMessage], 422);
-                }
-                return back()->withErrors($validator)->withInput();
-            }
-            $validated = $validator->validated();
-    
-            $sale = Sale::create([
-                'company_id' => $validated['company_id'],
-                'lead_id' => $validated['lead_id'],
-                'date' => now(),
-
-                'type' => $validated['sales_type'],
-                'payment_mode' => $validated['payment_mode'],
-                'transaction_details' => $validated['transaction_details'] ?? null,  
-                
-                'amount' => $validated['amount'] ?? 0,
-                'gst' => $validated['gst'] ?? 0,
-                'grand_total' => $validated['total'] ?? 0,
-                'created_by' => auth()->user()->id,
-            ]);
-
-            $lead = Lead::findOrFail($validated['lead_id']);
-            $lead->convert_sales = 1;
-            $lead->save();
-
-            return response()->json(['success' => true, 'message' => 'Sales details added successfully!', 'sale' => $sale], 201);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-    }
 
 }

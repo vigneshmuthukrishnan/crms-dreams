@@ -57,13 +57,13 @@
                                     <td >{{ $clients->firstItem() + $index }}</td>
                                     <td class="word-break">
                                         @if($client->lead)
-                                            {{ $client->company->name }}<br>{{ $client->lead->customer_name }}
+                                            {{ $client->company->name }}<br>{{ $client->company->owner }}
                                         @else
                                             N/A
                                         @endif
                                         </td>
-                                    <td>{{ $client->lead->product->name ?? 'N/A' }}</td>
-                                    <td>{{ $client->lead->productdetail->quantity ?? 'N/A' }}</td>
+                                    <td>{{ $client->products->name ?? 'N/A' }}</td>
+                                    <td>{{ $client->productdetail->quantity ?? 'N/A' }}</td>
                                     <td>{{ $client->payment_mode }}</td>
                                     <td>{{ number_format($client->amount, 2) }}</td>
                                     <td>{{ number_format($client->gst, 2) }}</td>
