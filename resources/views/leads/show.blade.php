@@ -188,24 +188,6 @@
             });
         });
 
-        $('#createLeadSalesForm').on('submit', function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                type: 'POST',
-                url: '{{ route("leads.storeSales") }}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    successMsg('Sales created successfully!');
-                    location.reload();
-                },
-                error: function (xhr) {
-                    errorMsg(xhr.responseJSON.message || 'An error occurred while creating the Lead Activity.');
-                }
-            });
-        });
 
         $('input[name="product"]').on('change', function () {
             let productId = $(this).val();
@@ -251,6 +233,26 @@
                 $('.sales_fields').hide();
             }
         });
-
+        
+        // here when entry amount gst total auto calculate
+        $('input[name="amount"]').on('input', function() {
+            var amount = parseFloat($('input[name="amount"]').val()) || 0;
+            var gst = parseFloat($('input[name="gst"]').val()) || 0;
+            var total = amount + gst;
+            if($('input[name="gst"]').val() == '') {
+                $('input[name="gst"]').val(gst.toFixed(2));
+            }
+            $('input[name="total"]').val(total.toFixed(2));
+        });
+        
+        $('input[name="gst"]').on('input', function() {
+            var amount = parseFloat($('input[name="amount"]').val()) || 0;
+            var gst = parseFloat($('input[name="gst"]').val()) || 0;
+            var total = amount + gst;
+            if($('input[name="amount"]').val() == '') {
+                $('input[name="amount"]').val(gst.toFixed(2));
+            }
+            $('input[name="total"]').val(total.toFixed(2));
+        });
     });
 </script>
