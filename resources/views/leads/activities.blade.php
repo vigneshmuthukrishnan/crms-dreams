@@ -132,7 +132,7 @@
                         <input type="hidden" name="company_id" value="{{ $lead->company_id }}">                      
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label requirded">Type <span class="text-danger">*</span></label>
+                                <label class="form-label">Type <span class="text-danger">*</span></label>
                                 <select name="sales_type" class="form-select">
                                     <option value="">Select Type</option>
                                     @foreach($sales_types as $type)
@@ -144,7 +144,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label requirded">Paymode <span class="text-danger">*</span></label>
+                                <label class="form-label">Paymode <span class="text-danger">*</span></label>
                                 <select name="payment_mode" class="form-select">
                                     <option value="">Select Paymode</option>
                                     @foreach($payment_modes as $mode)
@@ -155,16 +155,16 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label class="form-label requirded">Amount <span class="text-danger">*</span></label>
-                            <input type="number" name="amount" class="form-control" required>
+                            <label class="form-label">Amount <span class="text-danger">*</span></label>
+                            <input type="number" name="amount" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label requirded">GST <span class="text-danger">*</span></label>
-                            <input type="number" name="gst" class="form-control" required>
+                            <label class="form-label">GST <span class="text-danger">*</span></label>
+                            <input type="number" name="gst" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label requirded">Total <span class="text-danger">*</span></label>
-                            <input type="number" name="total" class="form-control" required>
+                            <label class="form-label">Total <span class="text-danger">*</span></label>
+                            <input type="number" name="total" class="form-control">
                         </div>
                     </div>
 

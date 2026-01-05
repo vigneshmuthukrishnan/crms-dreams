@@ -207,6 +207,11 @@
 
         $('#activity_status').on('change', function() {
             var selectedStatus = $(this).val();
+            $('input[name="gst"]').attr('required', false);
+            $('input[name="amount"]').attr('required', false);
+            $('input[name="total"]').attr('required', false);
+            $('select[name="payment_mode"]').attr('required', false);
+            $('select[name="sales_type"]').attr('required', false);
             if(selectedStatus === 'Followup') {
                 $('.product_lists').show();
                 $('#product_to_packages').attr('required', true);
@@ -219,12 +224,16 @@
                 $('.description_div').hide();
                 $('.sales_fields').hide();
             } else if(selectedStatus === 'Closed'){
-                $('.product_lists').hide();
                 $('.next_action_date_div').hide();
                 $('.description_div').hide();
                 $('.sales_fields').show();
                 $('.product_lists').show();
                 $('#product_to_packages').attr('required', true);
+                $('input[name="gst"]').attr('required', true);
+                $('input[name="amount"]').attr('required', true);
+                $('input[name="total"]').attr('required', true);
+                $('select[name="payment_mode"]').attr('required', true);
+                $('select[name="sales_type"]').attr('required', true);
             } else {
                 $('.product_lists').hide();
                 $('#product_to_packages').attr('required', false);
