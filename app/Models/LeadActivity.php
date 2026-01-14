@@ -47,4 +47,9 @@ class LeadActivity extends Model
     {
         return $this->hasOneThrough(ProductDetail::class, Lead::class, 'id', 'id', 'lead_id', 'package');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

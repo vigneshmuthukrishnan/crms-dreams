@@ -14094,3 +14094,6 @@ th.fc-day-header {
   white-space: normal;
   word-break: break-word;
 }
+.fc-h-event .fc-event-main-frame {
+    display: inline-grid !important;
+}

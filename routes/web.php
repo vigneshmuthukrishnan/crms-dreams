@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/product', [ProductController::class, 'index']);
     ROute::post('/product', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/packages-by-product/{productId}', [ProductController::class, 'getPackagesByProduct']);
+    Route::get('/packages-by-product/{productId}', [ProductControlcalendarler::class, 'getPackagesByProduct']);
 
 
     // Report 
@@ -80,6 +80,8 @@ Route::middleware('auth')->group(function () {
 
     // sales routes
     Route::get('/clients', [SalesController::class, 'index'])->name('clients.index');
+
+    Route::get('/calendar', [ReportController::class, 'calendar'])->name('calendar');
 });
 
 // Admin can do user management

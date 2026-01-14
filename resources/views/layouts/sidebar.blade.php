@@ -51,6 +51,9 @@
                         <li class="{{ Route::is('clients.*') ? 'active' : '' }}">
                             <a href="{{ url('/clients') }}"><i class="ti ti-chart-candle"></i><span>Clients</span></a>
                         </li>
+                        <li class="{{ Route::is('calendar') ? 'active' : '' }}">
+                            <a href="{{ url('/calendar') }}"><i class="ti ti-calendar"></i><span>Calendar</span></a>
+                        </li>
                     </ul>
                 </li>
                 @if(auth()->user()->admin)
@@ -61,23 +64,24 @@
                                 <a href="{{ url('/users') }}"><i class="ti ti-users"></i><span>Manage Users</span></a>
                             </li>
                             <li class="{{ Route::is('attendances.*') ? 'active' : '' }}">
-                                <a href="{{ url('/attendances') }}"><i class="ti ti-calendar"></i><span>Attendances</span></a>
+                                <a href="{{ url('/attendances') }}"><i class="ti ti-user-cog"></i><span>Attendances</span></a>
                             </li>
                         </ul>
                     </li>
                 @endif
-                <li class="menu-title"><span>Reports</span></li>
+                <!-- <li class="menu-title"><span>Reports</span></li>
                 <li>
                     <ul>
                         <li class="{{ Route::is('report.*') ? 'active' : '' }}">
                             <a href="{{ url('/report/leads') }}"><i class="ti ti-report-money"></i><span>Lead Reports</span></a>
                         </li>
-                        <!-- @if(auth()->user()->admin)
+                        @if(auth()->user()->admin)
                             <li class="#">
                                 <a href="#"><i class="ti ti-report-search"></i><span>Attendance Reports</span></a>
                             </li>
-                        @endif -->
+                        @endif 
                     </ul>
+                </li> -->
             </ul>
         </div>
     </div>
