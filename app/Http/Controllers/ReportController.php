@@ -56,12 +56,17 @@ class ReportController extends Controller
             $textColorArr = ['#FD3995', '#F7B924', '#34C38F', '#50A5F1'];
             $i = 1;
             foreach ($activities as $activity) {
+                // check lead active or closed
+                if (!isLeadActive($activity->lead_id)) {
+                    continue;
+                }
                 $data[] = [ 
                     'title' => trim($activity->company->name),
                     'start' => $activity->next_action_date,
                     'backgroundColor' => $backgroundColorArr[$i % count($backgroundColorArr)],
                     'textColor' => '#fff',
                     'extendedProps' => [
+                        'lead_id'     => $activity->lead_id,
                         'company'     => 'Meeting with '.trim($activity->company->name),
                         'phone'       => $activity->lead->number ?? '',
                         'email'       => $activity->lead->email ?? '',

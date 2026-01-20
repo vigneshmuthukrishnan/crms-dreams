@@ -39,3 +39,15 @@ function setColorStatus($status)
             return '<span class="badge badge-pill bg-secondary">'.$status.'</span>';
     }
 }
+
+// here find lead active or closed using LeadActivity table
+function isLeadActive($lead_id)
+{
+    $leadActivity = \App\Models\LeadActivity::where('lead_id', $lead_id)->get();
+    foreach ($leadActivity as $activity) {
+        if ($activity->status == 'Closed') {
+            return false;
+        }
+    }
+    return true;
+}

@@ -33,6 +33,11 @@
                     <p class="mt-2"><strong>Remarks:</strong></p>
                     <p id="modalRemarks"></p>
                 </div>
+                <div class="modal-footer">
+                    <!-- here href going to lead show page -->
+                    <a href="#" class="btn btn-primary" id="new_activity"><i class="ti ti-square-rounded-plus-filled me-1"></i>Add New Activity</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -69,7 +74,7 @@
                 document.getElementById('modalUser').innerText  = props.created_by;
                 document.getElementById('modalRemarks').innerText =
                     props.remark || 'No remarks';
-
+                document.getElementById('new_activity').href = "{{ route('leads.show', '') }}/" + props.lead_id;
                 new bootstrap.Modal(document.getElementById('eventModal')).show();
             }
         });
