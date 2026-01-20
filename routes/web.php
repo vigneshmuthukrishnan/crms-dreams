@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ProductControlcalendarler;
 use Illuminate\Support\Facades\Route;
 
 /*
