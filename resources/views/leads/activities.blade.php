@@ -111,7 +111,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-md-6 product_lists" style="display:none;">
+                        <div class="col-md-6 product_lists package_lists" style="display:none;">
                             <div class="mb-3">
                                 <label class="form-label">Packages <span class="text-danger ms-1">*</span></label>
                                 <select class="form-control" data-toggle="select2" name="package" id="product_to_packages">

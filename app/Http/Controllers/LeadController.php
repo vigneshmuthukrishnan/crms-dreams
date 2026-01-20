@@ -259,6 +259,10 @@ class LeadController extends Controller
     // Lead Activities functions
     public function addActivity(Request $request, $leadId)
     {
+        // validate request package if product is 5 set package to 0
+        if($request->product == '5' || $request->product == 5){
+            $request['package'] = '0';
+        }
         if($request->status == 'Invalid Number' || $request->status == 'Junk'){
             $valid = [
                 'activity_type' => 'required|string',

@@ -191,6 +191,17 @@
 
         $('input[name="product"]').on('change', function () {
             let productId = $(this).val();
+            if(productId == '5') {
+                // product_to_packages hide and remove required attribute
+                $("#product_to_packages").hide();
+                $(".package_lists").hide();
+                $("#product_to_packages").attr('required', false);
+                return;
+            } else {
+                $("#product_to_packages").show();
+                $(".package_lists").show();
+                $("#product_to_packages").attr('required', true);
+            }
             $.ajax({
                 url: "{{ url('/packages-by-product') }}/" + productId,
                 method: "GET",
