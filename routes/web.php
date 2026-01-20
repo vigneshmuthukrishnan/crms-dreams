@@ -11,7 +11,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\ProductControlcalendarler;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,8 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add'); 
     
     Route::get('/product', [ProductController::class, 'index']);
-    ROute::post('/product', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/packages-by-product/{productId}', [ProductControlcalendarler::class, 'getPackagesByProduct']);
+    Route::post('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/packages-by-product/{productId}', [ProductController::class, 'getPackagesByProduct']);
 
 
     // Report 
