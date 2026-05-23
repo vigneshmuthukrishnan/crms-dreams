@@ -53,20 +53,9 @@ class SmsLeadController extends Controller
                     $previewUrl = route('sms-leads.show', $row->id);
                     return '
                         <div class="dropdown table-action">
-                            <a href="#" class="action-icon btn btn-xs shadow btn-icon btn-outline-light" data-bs-toggle="dropdown">
-                                <i class="ti ti-dots-vertical"></i>
+                            <a class="dropdown-item" href="'.$previewUrl.'">
+                                <i class="ti ti-eye text-blue-light"></i> Preview
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="'.$previewUrl.'">
-                                    <i class="ti ti-eye text-blue-light"></i> Preview
-                                </a>
-                                <button type="button" class="dropdown-item update-sms-lead-status" data-id="'.$row->id.'" data-status="open">
-                                    <i class="ti ti-lock-open text-success"></i> Open Lead
-                                </button>
-                                <button type="button" class="dropdown-item update-sms-lead-status" data-id="'.$row->id.'" data-status="closed">
-                                    <i class="ti ti-lock text-danger"></i> Close Lead
-                                </button>
-                            </div>
                         </div>
                     ';
                 })
