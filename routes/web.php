@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\SmsLeadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,6 +67,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/leads/update/{id}', [LeadController::class, 'update'])->name('leads.update');
     Route::delete('/leads/delete/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
     Route::get('/leads/{id}', [LeadController::class, 'show'])->name('leads.show');
+
+    // SMS Lead Management Routes
+    Route::get('/sms-leads', [SmsLeadController::class, 'index'])->name('sms-leads.index');
+    Route::get('/sms-leads/{id}', [SmsLeadController::class, 'show'])->name('sms-leads.show');
+    Route::post('/sms-leads/status/{id}', [SmsLeadController::class, 'updateStatus'])->name('sms-leads.status');
 
     // lead activities
     Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add'); 
