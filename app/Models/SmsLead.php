@@ -13,7 +13,9 @@ class SmsLead extends Model
 
     protected $fillable = [
         'name',
+        'email',
         'phone',
+        'company_name',
         'looking_for',
         'otp',
         'verification',

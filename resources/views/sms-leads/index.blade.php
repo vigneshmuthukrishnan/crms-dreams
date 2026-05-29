@@ -75,7 +75,7 @@
                 {data: 'name', name: 'name', orderable: false, searchable: true},
                 {data: 'phone', name: 'phone', orderable: false, searchable: true},
                 {data: 'looking_for', name: 'looking_for', orderable: false, searchable: true},
-                {data: 'verification', name: 'verification', orderable: false, searchable: false},
+                // {data: 'verification', name: 'verification', orderable: false, searchable: false},
                 {data: 'status', name: 'status', orderable: false, searchable: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],

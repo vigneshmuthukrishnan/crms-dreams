@@ -68,10 +68,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/leads/delete/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
     Route::get('/leads/{id}', [LeadController::class, 'show'])->name('leads.show');
 
-    // SMS Lead Management Routes
-    Route::get('/sms-leads', [SmsLeadController::class, 'index'])->name('sms-leads.index');
-    Route::get('/sms-leads/{id}', [SmsLeadController::class, 'show'])->name('sms-leads.show');
-    Route::post('/sms-leads/status/{id}', [SmsLeadController::class, 'updateStatus'])->name('sms-leads.status');
 
     // lead activities
     Route::post('/leads/{leadId}/activities', [LeadController::class, 'addActivity'])->name('leads.activities.add'); 
@@ -98,6 +94,12 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     // Attendance Route
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+
+    // SMS Lead Management Routes
+    Route::get('/sms-leads', [SmsLeadController::class, 'index'])->name('sms-leads.index');
+    Route::get('/sms-leads/{id}', [SmsLeadController::class, 'show'])->name('sms-leads.show');
+    Route::post('/sms-leads/assign/{id}', [SmsLeadController::class, 'assignUser'])->name('sms-leads.assign');
+    Route::post('/sms-leads/status/{id}', [SmsLeadController::class, 'updateStatus'])->name('sms-leads.status');
 });
 
 require __DIR__.'/auth.php';

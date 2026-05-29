@@ -62,7 +62,7 @@
                                 <p class="mb-0">Created on {{ optional($smsLead->created_at)->format('d M Y, h:i A') ?? 'N/A' }}</p>
                             </div>
                         </div>
-                        <h6 class="mb-3 fw-semibold">Status</h6>
+                        <!-- <h6 class="mb-3 fw-semibold">Status</h6>
                         <form id="updateSmsLeadStatusForm">
                             @csrf
                             <select class="form-control mb-3" name="status" id="sms_lead_status">
@@ -72,7 +72,24 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="ti ti-device-floppy me-1"></i>Update Status
                             </button>
+                        </form> 
+
+                        <hr>-->
+                        @if($smsLead->status == 'open')
+                        <h6 class="mb-3 fw-semibold">Assign User</h6>
+                        <form id="assignSmsLeadUserForm">
+                            @csrf
+                            <select class="form-control mb-3" name="user_id" id="sms_lead_user_id">
+                                <option value="">Select User</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}{{ $user->email ? ' - '.$user->email : '' }}</option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="ti ti-user-check me-1"></i>Assign User
+                            </button>
                         </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -93,20 +110,24 @@
                                 <span class="col-8 text-dark">{{ $smsLead->phone ?? 'N/A' }}</span>
                             </li>
                             <li class="row mb-2">
+                                <span class="col-4">Email</span>
+                                <span class="col-8 text-dark">{{ $smsLead->email ?? 'N/A' }}</span>
+                            </li>
+                            <li class="row mb-2">
+                                <span class="col-4">Compnay</span>
+                                <span class="col-8 text-dark">{{ $smsLead->company_name ?? 'N/A' }}</span>
+                            </li>
+                            <li class="row mb-2">
                                 <span class="col-4">Looking For</span>
                                 <span class="col-8 text-dark">{{ $smsLead->looking_for ?? 'N/A' }}</span>
                             </li>
                             <li class="row mb-2">
-                                <span class="col-4">OTP</span>
-                                <span class="col-8 text-dark">{{ $smsLead->otp ?? 'N/A' }}</span>
-                            </li>
-                            <li class="row mb-2">
-                                <span class="col-4">Verification</span>
-                                <span class="col-8 text-dark">{{ $smsLead->verification ?? 'N/A' }}</span>
+                                <span class="col-4">OTP Status</span>
+                                <span class="col-8 text-dark">{{ $smsLead->verification ? 'Verification' : 'Not Verification' }}</span>
                             </li>
                             <li class="row">
-                                <span class="col-4">Last Modified</span>
-                                <span class="col-8 text-dark">{{ optional($smsLead->updated_at)->format('d M Y, h:i A') ?? 'N/A' }}</span>
+                                <span class="col-4">Created Data & time</span>
+                                <span class="col-8 text-dark">{{ optional($smsLead->created_at)->format('d M Y, h:i A') ?? 'N/A' }}</span>
                             </li>
                         </ul>
                     </div>
@@ -133,6 +154,26 @@
                 },
                 error: function (xhr) {
                     errorMsg(xhr.responseJSON.message || 'An error occurred while updating status.');
+                }
+            });
+        });
+
+        $('#assignSmsLeadUserForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: "{{ route('sms-leads.assign', $smsLead->id) }}",
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_id: $('#sms_lead_user_id').val()
+                },
+                success: function (response) {
+                    successMsg(response.message || 'SMS lead assigned successfully!');
+                    window.location.href = "{{ route('sms-leads.index') }}";
+                },
+                error: function (xhr) {
+                    errorMsg(xhr.responseJSON.message || 'An error occurred while assigning user.');
                 }
             });
         });

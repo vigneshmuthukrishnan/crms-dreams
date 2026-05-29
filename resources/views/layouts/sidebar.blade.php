@@ -56,15 +56,15 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-title"><span>Lead source</span></li>
-                <li>
-                    <ul>
-                        <li class="{{ Route::is('sms-leads.*') ? 'active' : '' }}">
-                            <a href="{{ url('/sms-leads') }}"><i class="ti ti-message-circle"></i><span>Landing Pages Leads</span></a>
-                        </li>
-                    </ul>
-                </li>
                 @if(auth()->user()->admin)
+                    <li class="menu-title"><span>Lead source</span></li>
+                    <li>
+                        <ul>
+                            <li class="{{ Route::is('sms-leads.*') ? 'active' : '' }}">
+                                <a href="{{ url('/sms-leads') }}"><i class="ti ti-message-circle"></i><span>Landing Pages Leads</span></a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="menu-title"><span>User Management</span></li>
                     <li>							
                         <ul>

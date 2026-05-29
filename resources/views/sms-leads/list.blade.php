@@ -8,7 +8,7 @@
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Looking For</th>
-                        <th>Verification</th>
+                        <!-- <th>Verification</th?> -->
                         <th>Status</th>
                         <th class="text-end no-sort">Action</th>
                     </tr>
